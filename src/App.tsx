@@ -2,8 +2,12 @@ import { useState } from "react";
 import { DataSet } from "vis-data";
 import "./App.css";
 import Graph from "./components/Graph";
+import QuickSearch from "./components/QuickSearch";
+import { BsSearch } from "react-icons/bs";
 
 function App() {
+  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+
   const options = {};
 
   const [nodes, setNodes] = useState(
@@ -17,6 +21,7 @@ function App() {
       options
     )
   );
+
   const [edges, setEdges] = useState(
     new DataSet(
       [
@@ -33,10 +38,21 @@ function App() {
     <div
       className="w-screen h-screen overflow-hidden
       bg-gray-200 dark:bg-dark-primary
-      block grid-background
+      block 
+      grid-background
+      galaxy-background
       "
     >
       <Graph edges={edges} nodes={nodes} />
+      {quickSearchOpen && (
+        <QuickSearch close={() => setQuickSearchOpen(false)} />
+      )}
+      <div
+        onClick={() => setQuickSearchOpen(true)}
+        className="absolute cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary bottom-3 right-3"
+      >
+        <BsSearch />
+      </div>
     </div>
   );
 }
