@@ -12,8 +12,12 @@ import {
   MdFormatAlignLeft,
 } from "react-icons/md";
 import { CiStreamOff, CiStreamOn } from "react-icons/ci";
+import { DataSet } from "vis-data";
 
-type Props = {};
+type Props = {
+  setNodes: (nodes: any) => void;
+  setEdges: (edges: any) => void;
+};
 
 const Console = (props: Props) => {
   const [open, setOpen] = useState(false);
@@ -30,14 +34,7 @@ const Console = (props: Props) => {
       return;
     }
 
-    if (ref.current) {
-      const content = ref.current.innerText.replace(/\s*/g, "");
-      console.log(content);
-      const isValid = RE.test(content);
-      console.log(isValid);
-
-      setValid(isValid);
-    }
+    generate();
   }
 
   function formatInput() {
@@ -48,14 +45,74 @@ const Console = (props: Props) => {
   }
 
   function generate() {
+    if (validateInput()) {
+      // const [nodes, setNodes] = useState(
+      //   new DataSet(
+      //     [
+      //       { id: 1, label: "Node 1", x: 0, y: 0 },
+      //       { id: 2, label: "Node 2", x: 100, y: 0 },
+      //       { id: 3, label: "Node 3", x: 0, y: 100 },
+      //       { id: 4, label: "Node 4", x: 100, y: 100 },
+      //     ],
+      //     options
+      //   )
+      // );
+      //
+      // const [edges, setEdges] = useState(
+      //   new DataSet(
+      //     [
+      //       { id: 1, from: 1, to: 2 },
+      //       { id: 2, from: 1, to: 3 },
+      //       { id: 3, from: 2, to: 4 },
+      //       { id: 4, from: 3, to: 4 },
+      //     ],
+      //     options
+      //   )
+      // );
+      //
+
+      if (ref.current) {
+        const content = ref.current.innerText.replace(/\s*/g, "");
+        const array: (number | string)[][] = JSON.parse(content);
+        console.log(array);
+
+        const nodes = array.flat().map((row) => {
+          return { id: row, label: `Node ${row}`, x: 10, y: 10 };
+        });
+
+        console.log(nodes);
+        props.setNodes(new DataSet(nodes, {}));
+
+        const edges = array.flat().map((row, i) => {
+          return array
+            .flat()
+            .filter((innerRow) => innerRow != row)
+            .map((innerRow, j) => {
+              return {
+                id: i * 10 + j,
+                from: row,
+                to: innerRow,
+                label: `${row} -> ${innerRow}`,
+              };
+            });
+        });
+
+        console.log(edges.flat());
+
+        props.setEdges(new DataSet(edges.flat(), {}));
+      }
+    }
+  }
+
+  function validateInput(_format?: string): boolean {
     if (ref.current) {
       const content = ref.current.innerText.replace(/\s*/g, "");
-      console.log(content);
       const isValid = RE.test(content);
-      console.log(isValid);
 
       setValid(isValid);
+      return isValid;
     }
+    return false;
   }
 
   return (

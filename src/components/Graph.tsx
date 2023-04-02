@@ -50,7 +50,7 @@ const Graph = ({ nodes, edges }: Props) => {
             stabilization: {
               enabled: true,
               iterations: 1000,
-              updateInterval: 100,
+              updateInterval: 100000,
               onlyDynamicEdges: false,
               fit: true,
             },
@@ -61,7 +61,7 @@ const Graph = ({ nodes, edges }: Props) => {
 
     if (network) {
     }
-  }, []);
+  }, [ref, nodes, edges]);
 
   return <div ref={ref} className="w-full h-full"></div>;
 };

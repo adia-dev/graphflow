@@ -44,12 +44,14 @@ function App() {
       }
     }
 
+    console.log(nodes);
+
     window.addEventListener("keydown", handleShortcut);
 
     return () => {
       window.removeEventListener("keydown", handleShortcut);
     };
-  }, []);
+  }, [nodes]);
 
   return (
     <div
@@ -74,7 +76,7 @@ function App() {
             <BsSearch />
           </div>
         </div>
-        <Console />
+        <Console setNodes={setNodes} setEdges={setEdges} />
       </div>
     </div>
   );
