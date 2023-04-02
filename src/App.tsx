@@ -4,6 +4,7 @@ import "./App.css";
 import Graph from "./components/Graph";
 import QuickSearch from "./components/QuickSearch";
 import { BsSearch } from "react-icons/bs";
+import Console from "./components/Console";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -57,17 +58,23 @@ function App() {
       block 
       grid-background
       galaxy-background
+      relative
       "
     >
       <Graph edges={edges} nodes={nodes} />
       {quickSearchOpen && (
         <QuickSearch close={() => setQuickSearchOpen(false)} />
       )}
-      <div
-        onClick={() => setQuickSearchOpen(true)}
-        className="absolute cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary bottom-3 right-3"
-      >
-        <BsSearch />
+      <div className="absolute bottom-0 w-full">
+        <div className="w-full flex items-center justify-end">
+          <div
+            onClick={() => setQuickSearchOpen(true)}
+            className="cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary"
+          >
+            <BsSearch />
+          </div>
+        </div>
+        <Console />
       </div>
     </div>
   );
