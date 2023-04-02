@@ -11,11 +11,18 @@ type SearchItem = {
   category: string;
   icon?: JSX.Element;
   shortcut?: string[];
+  callback?: (self: SearchItem) => void | Promise<void>;
 };
 
 const QuickSearch = (props: Props) => {
   const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
   const searchItems: SearchItem[] = [
+    {
+      name: "New Tree",
+      icon: <TbBinaryTree />,
+      category: "trees",
+      shortcut: ["⌘", "⌃", "N"],
+    },
     {
       name: "Binary Tree",
       icon: <TbBinaryTree />,
@@ -54,21 +61,16 @@ const QuickSearch = (props: Props) => {
   }, []);
 
   return (
-    <div
-      className="
-      w-scren h-screen absolute z-10
-      inset-0
-      text-gray-600 dark:text-gray-500
-      "
-    >
-      <div className="w-full h-full flex items-center justify-center bg-dark-primary bg-opacity-10 backdrop-blur transition-all duration-300 ease-in-out">
+    <div className="w-scren h-screen absolute z-10 inset-0 text-gray-600 dark:text-gray-500 ">
+      <div className="w-full h-full flex items-center justify-center bg-dark-primary bg-opacity-60 backdrop-blur-sm transition-all duration-300 ease-in-out">
         <div
           id="quick-search"
-          className="w-[600px] h-[400px] bg-gray-300 border border-gray-400
-          dark:bg-dark-primary dark:border-dark-secondary
+          className="w-[750px] h-[400px] bg-gray-300 border border-gray-400
+          dark:bg-[#121212] dark:border-dark-secondary
           rounded-3xl
           overflow-hidden
           text-lg
+          shadow-xl
           "
         >
           <form className="" onSubmit={onSubmit}>
