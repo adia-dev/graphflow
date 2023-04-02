@@ -37,7 +37,7 @@ function App() {
 
   useEffect(() => {
     function handleShortcut(e: KeyboardEvent) {
-      console.log(e.key);
+      // console.log(e.key);
 
       if ((e.metaKey || e.ctrlKey) && e.key == "k") {
         setQuickSearchOpen((state) => !state);
