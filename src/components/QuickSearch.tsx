@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
 import { TbBinaryTree } from "react-icons/tb";
+import { TfiLayoutGrid4 } from "react-icons/tfi";
 
 type Props = {
   close: () => void;
@@ -28,6 +29,12 @@ const QuickSearch = (props: Props) => {
       icon: <TbBinaryTree />,
       category: "trees",
       shortcut: ["⌘", "⌃", "T"],
+    },
+    {
+      name: "Matrix | Grid",
+      icon: <TfiLayoutGrid4 />,
+      category: "matrices",
+      shortcut: ["⌘", "⌃", "M"],
     },
   ];
 
