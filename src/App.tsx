@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import "./App.css";
 import Graph from "./components/Graph";
@@ -33,6 +33,22 @@ function App() {
       options
     )
   );
+
+  useEffect(() => {
+    function handleShortcut(e: KeyboardEvent) {
+      console.log(e.key);
+
+      if ((e.metaKey || e.ctrlKey) && e.key == "k") {
+        setQuickSearchOpen((state) => !state);
+      }
+    }
+
+    window.addEventListener("keydown", handleShortcut);
+
+    return () => {
+      window.removeEventListener("keydown", handleShortcut);
+    };
+  }, []);
 
   return (
     <div

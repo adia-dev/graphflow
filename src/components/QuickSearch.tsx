@@ -44,8 +44,7 @@ const QuickSearch = (props: Props) => {
 
     const handleClickOutside = (e: MouseEvent) => {
       if (quickSearch && !quickSearch.contains(e.target as Node)) {
-        console.log("clicked outside of the quick search !");
-        // props.close();
+        props.close();
       }
     };
 
@@ -53,10 +52,10 @@ const QuickSearch = (props: Props) => {
       if (e.key === "Escape") props.close();
     });
 
-    window.addEventListener("click", handleClickOutside);
+    window.addEventListener("mouseup", handleClickOutside);
 
     return () => {
-      window.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("mouseup", handleClickOutside);
     };
   }, []);
 
