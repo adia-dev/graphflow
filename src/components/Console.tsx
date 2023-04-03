@@ -78,26 +78,48 @@ const Console = (props: Props) => {
         console.log(array);
 
         const nodes = array.flat().map((row) => {
-          return { id: row, label: `Node ${row}`, x: 10, y: 10 };
+          return {
+            id: row,
+            label: `Node ${row}`,
+            x: 10,
+            y: 10,
+            color: "#aa33ff",
+          };
         });
 
         console.log(nodes);
         props.setNodes(new DataSet(nodes, {}));
 
-        const edges = array.flat().map((row, i) => {
-          return array
-            .flat()
-            .filter((innerRow) => innerRow != row)
-            .map((innerRow, j) => {
-              return {
-                id: i * 10 + j,
-                from: row,
-                to: innerRow,
-                label: `${row} -> ${innerRow}`,
-              };
-            });
+        // const edges = array.flatMap((edge, i) => {
+        //   console.log(edge);
+        // });
+        // console.log(edges.flat());
+        // connect neighbors of the matrix 4 way
+        const edges = array.flatMap((row, i) => {
+          return row.flatMap((col, j) => {
+            const neighbors = [
+              [i - 1, j],
+              [i + 1, j],
+              [i, j - 1],
+              [i, j + 1],
+            ];
+            return neighbors
+              .filter((neighbor) => {
+                const [x, y] = neighbor;
+                return x >= 0 && y >= 0 && x < array.length && y < row.length;
+              })
+              .map((neighbor) => {
+                const [x, y] = neighbor;
+                return {
+                  id: `${col}-${array[x][y]}`,
+                  from: col,
+                  to: array[x][y],
+                  label: `${col} -> ${array[x][y]}`,
+                  color: "#ff51b5",
+                };
+              });
+          });
         });
-
         console.log(edges.flat());
 
         props.setEdges(new DataSet(edges.flat(), {}));

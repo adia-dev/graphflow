@@ -44,6 +44,32 @@ function App() {
         if (e.key == "k") setQuickSearchOpen((state) => !state);
         if (e.key == "i") setConsoleOpen((state) => !state);
       }
+      else if (e.key == "Escape") {
+        setQuickSearchOpen(false);
+        setConsoleOpen(false);
+      }
+
+      else if (e.key == "Enter") {
+        // add a random node
+        const id = Math.floor(Math.random() * 1000000);
+        const randomRadius = Math.floor(Math.random() * 1000);
+        const randomCOlor = Math.floor(Math.random() * 16777215).toString(16);
+        const color = "#" + randomCOlor;
+        const x = Math.floor(Math.random() * 1000);
+        const y = Math.floor(Math.random() * 1000);
+        nodes.add({ id, x, y, color, label: id.toString(), shape: "circle", size: randomRadius });
+        console.log(nodes);
+        // connect it to a random node that has at least one edge
+        const connectedNodes = nodes.get({
+          filter: (node) => edges.get({ filter: (edge) => edge.to == node.id || edge.from == node.id }).length > 0,
+        });
+        if (connectedNodes.length > 0) {
+          const randomNode = connectedNodes[Math.floor(Math.random() * connectedNodes.length)];
+          const dimmedColor = color + "55";
+          edges.add({ id: Math.floor(Math.random() * 1000000), from: randomNode.id, to: id, color: dimmedColor });
+        }
+
+      }
     }
 
     console.log(nodes);
