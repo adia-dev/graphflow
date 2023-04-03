@@ -8,6 +8,7 @@ import Console from "./components/Console";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+  const [consoleOpen, setConsoleOpen] = useState(false);
 
   const options = {};
 
@@ -39,8 +40,9 @@ function App() {
     function handleShortcut(e: KeyboardEvent) {
       // console.log(e.key);
 
-      if ((e.metaKey || e.ctrlKey) && e.key == "k") {
-        setQuickSearchOpen((state) => !state);
+      if (e.metaKey || e.ctrlKey) {
+        if (e.key == "k") setQuickSearchOpen((state) => !state);
+        if (e.key == "i") setConsoleOpen((state) => !state);
       }
     }
 
@@ -76,7 +78,12 @@ function App() {
             <BsSearch />
           </div>
         </div>
-        <Console setNodes={setNodes} setEdges={setEdges} />
+        <Console
+          open={consoleOpen}
+          setOpen={setConsoleOpen}
+          setNodes={setNodes}
+          setEdges={setEdges}
+        />
       </div>
     </div>
   );

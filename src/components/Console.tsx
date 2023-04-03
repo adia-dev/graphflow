@@ -15,12 +15,13 @@ import { CiStreamOff, CiStreamOn } from "react-icons/ci";
 import { DataSet } from "vis-data";
 
 type Props = {
+  open: boolean;
+  setOpen: (state: boolean) => void;
   setNodes: (nodes: any) => void;
   setEdges: (edges: any) => void;
 };
 
 const Console = (props: Props) => {
-  const [open, setOpen] = useState(false);
   const [valid, setValid] = useState<boolean | null>(null);
   const [liveInput, setLiveInput] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -128,12 +129,12 @@ const Console = (props: Props) => {
         flex flex-col
       "
       style={{
-        height: `${open ? "250px" : "50px"}`,
+        height: `${props.open ? "250px" : "50px"}`,
       }}
     >
       <div className="w-full">
         <div
-          onClick={() => setOpen(!open)}
+          onClick={() => props.setOpen(!props.open)}
           className="text-gray-500 hover:bg-primary-500 hover:text-white transition-all duration-500 ease-in-out w-full h-2 dark:bg-dark-tertiary cursor-row-resize flex items-center justify-center"
         >
           <BsThreeDots />
@@ -142,9 +143,9 @@ const Console = (props: Props) => {
           <h3 className="">Console</h3>
           <div className="flex items-center space-x-3">
             <BiChevronDown
-              onClick={() => setOpen(!open)}
+              onClick={() => props.setOpen(!props.open)}
               className={`${
-                !open && "rotate-180"
+                !props.open && "rotate-180"
               } transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
             />
             <BsLayoutSidebarInsetReverse />
