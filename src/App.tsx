@@ -5,10 +5,40 @@ import Graph from "./components/Graph";
 import QuickSearch from "./components/QuickSearch";
 import { BsSearch } from "react-icons/bs";
 import Console from "./components/Console";
+import { AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [consoleOpen, setConsoleOpen] = useState(false);
+  const [loadingPct, setLoadingPct] = useState(0);
+  const [currentFact, setCurrentFact] = useState(0);
+
+  const randomFacts = [
+    "Graphflow helps you visualize your data !",
+    "It is as easy as copy-pasting your data into the console !",
+    "Graphflow is a work in progress, so please be patient with me !",
+    "Graphflow is open source, so feel free to contribute !",
+    "The console supports live input, so you can see your graph update as you type !",
+    "Graphflow is built with React, Typescript, and Vis.js",
+    "Checkout my other projects on my Github page ! (@adia-dev)",
+    "I am a student at the school ESGI in Paris, France",
+    "You can use the keyboard shortcuts Ctrl/Cmd + K to open the quick search, and Ctrl/Cmd + I to open the console",
+    "You can use the keyboard shortcut Escape to close the quick search and the console",
+  ];
+
+  useEffect(() => {
+    // increase the loading percentage by a random amount to emulate a loading bar
+    const interval = setInterval(() => {
+      setLoadingPct((pct) => Math.min(pct + Math.random() * 75, 101));
+      setCurrentFact((fact) => (fact + 1) % randomFacts.length);
+    }, 2000);
+
+    if (loadingPct >= 100) clearInterval(interval);
+
+
+    return () => clearInterval(interval);
+  }, [loadingPct]);
+
 
   const options = {};
 
@@ -72,14 +102,46 @@ function App() {
       }
     }
 
-    console.log(nodes);
-
     window.addEventListener("keydown", handleShortcut);
 
     return () => {
       window.removeEventListener("keydown", handleShortcut);
     };
   }, [nodes]);
+
+  if (loadingPct <= 100) {
+    return (
+      <div className="w-screen h-screen dark:bg-dark-primary flex items-center justify-center flex-col">
+        <div className="py-3 w-full flex items-center space-x-3 justify-center">
+          <h1 className="text-2xl text-primary-500 font-bold">
+            Graphflow is getting ready...
+          </h1>
+          <h1 className="text-2xl text-primary-500 font-bold">
+            {loadingPct.toFixed(0)}%
+          </h1>
+          <AiOutlineLoading3Quarters className="text-primary-500 text-5xl animate-spin" />
+        </div>
+        <div className="w-1/2 h-1 bg-primary-900 rounded-full">
+          <div
+            className="h-full bg-primary-500 rounded-full transition-all duration-500"
+            style={{ width: `${loadingPct}%` }}
+          ></div>
+          {/* quote block */}
+          <div className="w-full flex items-center justify-center mt-5 text-gray-200">
+            <blockquote className="text-xl italic font-semibold text-gray-900 dark:text-white
+              p-3 dark:bg-dark-secondary rounded-md shadow-md hover:shadow-lg hover:bg-dark-tertiary
+              transition-all duration-300
+              cursor-pointer whitespace-nowrap
+            "
+              onClick={() => setCurrentFact((fact) => (fact + 1) % randomFacts.length)}
+            >
+              ❝&nbsp;{randomFacts[currentFact]}&nbsp;❞
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
