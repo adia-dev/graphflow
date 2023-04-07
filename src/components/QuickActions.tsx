@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { TbArrowBounce, TbBinaryTree, TbBinaryTree2 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
@@ -15,7 +15,7 @@ type SearchItem = {
   category: string;
   icon?: JSX.Element;
   shortcut?: string[];
-  callback?: (self: SearchItem) => void | Promise<void>;
+  callback?: (self?: SearchItem) => void | Promise<void>;
 };
 
 const QuickActions = (props: Props) => {
@@ -68,6 +68,28 @@ const QuickActions = (props: Props) => {
     },
   ];
 
+  const [filteredSearchItems, setFilteredSearchItems] =
+    useState<SearchItem[]>(searchItems);
+
+  const [selectedItem, setSelectedItem] = useState(0);
+
+  async function searchQuickAction(e: React.FormEvent<HTMLInputElement>) {
+    const { value } = e.target as HTMLInputElement;
+
+    if (!value || value == "") {
+      setFilteredSearchItems(searchItems);
+      return;
+    }
+
+    setFilteredSearchItems(
+      filteredSearchItems.filter((item) =>
+        item.name.toLowerCase().startsWith(value.toLowerCase())
+      )
+    );
+
+    setSelectedItem(0);
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -85,13 +107,48 @@ const QuickActions = (props: Props) => {
       }
     };
 
-    window.addEventListener("keydown", (e) => {
+    const handleKeydown = (e: React.KeyboardEvent) => {
       if (e.key === "Escape") props.close();
-    });
+
+      if (e.key === "Enter") {
+        console.log(selectedItem);
+        console.log(filteredSearchItems.length);
+        if (selectedItem < 0 || selectedItem >= filteredSearchItems.length)
+          return;
+
+        console.log("Pressed enter");
+
+        console.log(filteredSearchItems[selectedItem]);
+
+        filteredSearchItems[selectedItem].callback &&
+          filteredSearchItems[selectedItem].callback();
+      }
+    };
+
+    const handleKeyup = (e: React.KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        if (selectedItem - 1 < 0)
+          setSelectedItem((_item) => filteredSearchItems.length - 1);
+        else setSelectedItem((item) => item - 1);
+      }
+
+      if (e.key === "ArrowUp") {
+        if (selectedItem >= filteredSearchItems.length)
+          setSelectedItem((_item) => 0);
+        else setSelectedItem((item) => item + 1);
+        console.log(selectedItem);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("keyup", handleKeyup);
 
     window.addEventListener("mouseup", handleClickOutside);
 
     return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener("keyup", handleKeyup);
+
       window.removeEventListener("mouseup", handleClickOutside);
     };
   }, []);
@@ -115,8 +172,10 @@ const QuickActions = (props: Props) => {
               <input
                 type="text"
                 name="query"
+                onChange={searchQuickAction}
                 placeholder="Search or type a command..."
                 className="w-full p-4 bg-transparent pl-12 border-none outline-none focus:border-transparent focus:outline-none focus:ring-0"
+                autoFocus
               />
             </div>
           </form>
@@ -131,10 +190,12 @@ const QuickActions = (props: Props) => {
             ))}
           </ul>
           <div className="p-3">
-            {searchItems.map((item, i) => (
+            {filteredSearchItems.map((item, i) => (
               <div
                 key={i}
-                className="cursor-pointer hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between"
+                className={`cursor-pointer ${
+                  selectedItem === i && "bg-dark-secondary"
+                } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback(item)}
               >
                 <div className="flex items-center space-x-2">
