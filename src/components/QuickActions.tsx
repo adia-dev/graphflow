@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
-import { TbBinaryTree } from "react-icons/tb";
+import { TbArrowBounce, TbBinaryTree, TbBinaryTree2 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
+import { Options } from "vis-network";
 
 type Props = {
   close: () => void;
+  setOptions: (options: Options) => void;
+  options: Options;
 };
 
 type SearchItem = {
@@ -15,7 +18,7 @@ type SearchItem = {
   callback?: (self: SearchItem) => void | Promise<void>;
 };
 
-const QuickSearch = (props: Props) => {
+const QuickActions = (props: Props) => {
   const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
   const searchItems: SearchItem[] = [
     {
@@ -31,10 +34,37 @@ const QuickSearch = (props: Props) => {
       shortcut: ["⌘", "⌃", "T"],
     },
     {
+      name: "N-Ary Tree",
+      icon: <TbBinaryTree2 />,
+      category: "trees",
+      shortcut: ["⌘", "⌃", "T"],
+    },
+    {
       name: "Matrix | Grid",
       icon: <TfiLayoutGrid4 />,
       category: "matrices",
       shortcut: ["⌘", "⌃", "M"],
+    },
+    {
+      name: "Toggle Physics",
+      icon: <TbArrowBounce />,
+      category: "config",
+      shortcut: ["⌘", "⌃", "P"],
+      callback: () => {
+        props.setOptions((options: Options) => {
+          return {
+            ...options,
+            physics: {
+              ...options.physics,
+              enabled: !options.physics.enabled,
+            },
+          };
+        });
+
+        console.log(props.options);
+        console.log(`physics enabled: ${props.options.physics.enabled}`);
+        props.close();
+      },
     },
   ];
 
@@ -105,6 +135,7 @@ const QuickSearch = (props: Props) => {
               <div
                 key={i}
                 className="cursor-pointer hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between"
+                onClick={() => item.callback && item.callback(item)}
               >
                 <div className="flex items-center space-x-2">
                   {item.icon && item.icon}
@@ -134,4 +165,4 @@ const QuickSearch = (props: Props) => {
   );
 };
 
-export default QuickSearch;
+export default QuickActions;
