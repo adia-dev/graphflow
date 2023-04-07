@@ -196,6 +196,7 @@ const Console = (props: Props) => {
         <div className="w-full flex-1 flex items-end justify-between">
           <button
             type="button"
+            onClick={() => props.setOpen(false)}
             className="dark:bg-red-500 hover:bg-red-700 px-3 py-2 rounded-lg"
           >
             Close
