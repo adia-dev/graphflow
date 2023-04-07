@@ -11,7 +11,7 @@ import { Options } from "vis-network";
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [consoleOpen, setConsoleOpen] = useState(false);
-  const [loadingPct, setLoadingPct] = useState(0);
+  const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
 
   const randomFacts = [

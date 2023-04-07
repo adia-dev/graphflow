@@ -52,15 +52,12 @@ const Console = (props: Props) => {
         let matrix: (number | string)[][] = JSON.parse(content);
         let width = 0;
         matrix.forEach((row) => (width = Math.max(width, row.length)));
-        console.log(matrix);
 
         matrix = matrix.map((row) =>
           row.length < width
             ? [...row, ...Array(width - row.length).fill(null)]
             : row
         );
-
-        console.log("adjustedMatrix", matrix);
 
         const nodes = matrix
           .map((row, i) =>
@@ -91,6 +88,8 @@ const Console = (props: Props) => {
               edges.push({
                 from: i * 10 + j,
                 to: i * 10 + j - 1,
+                color:
+                  matrix[i][j] && matrix[i][j - 1] ? "#6366f1" : "#ffffff25",
               });
               edgeSet.add(key);
             }
@@ -99,13 +98,14 @@ const Console = (props: Props) => {
               edges.push({
                 from: i * 10 + j,
                 to: (i - 1) * 10 + j,
+                color:
+                  matrix[i][j] && matrix[i - 1][j] ? "#6366f1" : "#ffffff25",
               });
               edgeSet.add(key);
             }
           }
         }
 
-        console.log("edges: ", edges);
         props.setEdges(new DataSet(edges, {}));
       }
     }
