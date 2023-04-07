@@ -47,82 +47,66 @@ const Console = (props: Props) => {
 
   function generate() {
     if (validateInput()) {
-      // const [nodes, setNodes] = useState(
-      //   new DataSet(
-      //     [
-      //       { id: 1, label: "Node 1", x: 0, y: 0 },
-      //       { id: 2, label: "Node 2", x: 100, y: 0 },
-      //       { id: 3, label: "Node 3", x: 0, y: 100 },
-      //       { id: 4, label: "Node 4", x: 100, y: 100 },
-      //     ],
-      //     options
-      //   )
-      // );
-      //
-      // const [edges, setEdges] = useState(
-      //   new DataSet(
-      //     [
-      //       { id: 1, from: 1, to: 2 },
-      //       { id: 2, from: 1, to: 3 },
-      //       { id: 3, from: 2, to: 4 },
-      //       { id: 4, from: 3, to: 4 },
-      //     ],
-      //     options
-      //   )
-      // );
-      //
-
       if (ref.current) {
         const content = ref.current.innerText.replace(/\s*/g, "");
-        const array: (number | string)[][] = JSON.parse(content);
-        console.log(array);
+        let matrix: (number | string)[][] = JSON.parse(content);
+        let width = 0;
+        matrix.forEach((row) => (width = Math.max(width, row.length)));
+        console.log(matrix);
 
-        const nodes = array.flat().map((row) => {
-          return {
-            id: row,
-            label: `Node ${row}`,
-            x: 10,
-            y: 10,
-            color: "#aa33ff",
-          };
-        });
+        matrix = matrix.map((row) =>
+          row.length < width
+            ? [...row, ...Array(width - row.length).fill(null)]
+            : row
+        );
 
-        console.log(nodes);
+        console.log("adjustedMatrix", matrix);
+
+        const nodes = matrix
+          .map((row, i) =>
+            row.map((val, j) => {
+              return {
+                id: i * 10 + j,
+                x: j * 100,
+                y: i * 100,
+                label: val ? val.toString() : "-",
+                color: val ? "#6366f1" : "#ffffff25",
+              };
+            })
+          )
+          .flat();
+
         props.setNodes(new DataSet(nodes, {}));
 
-        // const edges = array.flatMap((edge, i) => {
-        //   console.log(edge);
-        // });
-        // console.log(edges.flat());
-        // connect neighbors of the matrix 4 way
-        const edges = array.flatMap((row, i) => {
-          return row.flatMap((col, j) => {
-            const neighbors = [
-              [i - 1, j],
-              [i + 1, j],
-              [i, j - 1],
-              [i, j + 1],
-            ];
-            return neighbors
-              .filter((neighbor) => {
-                const [x, y] = neighbor;
-                return x >= 0 && y >= 0 && x < array.length && y < row.length;
-              })
-              .map((neighbor) => {
-                const [x, y] = neighbor;
-                return {
-                  id: `${col}-${array[x][y]}`,
-                  from: col,
-                  to: array[x][y],
-                  label: `${col} -> ${array[x][y]}`,
-                  color: "#ff51b5",
-                };
-              });
-          });
-        });
-        console.log(edges.flat());
+        const edges = [];
+        const edgeSet = new Set<string>();
 
-        props.setEdges(new DataSet(edges.flat(), {}));
+        for (let i = 0; i < matrix.length; ++i) {
+          for (let j = 0; j < width; ++j) {
+            const key = `${i}${j}${j}${i}`;
+
+            if (edgeSet.has(key)) continue;
+
+            if (j - 1 >= 0) {
+              edges.push({
+                from: i * 10 + j,
+                to: i * 10 + j - 1,
+              });
+              edgeSet.add(key);
+            }
+
+            if (i - 1 >= 0) {
+              edges.push({
+                from: i * 10 + j,
+                to: (i - 1) * 10 + j,
+              });
+              edgeSet.add(key);
+            }
+          }
+        }
+
+        console.log("edges: ", edges);
+        props.setEdges(new DataSet(edges, {}));
       }
     }
   }

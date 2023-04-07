@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { DataSet } from "vis-data";
 import "./App.css";
 import Graph from "./components/Graph";
-import QuickSearch from "./components/QuickSearch";
+import QuickActions from "./components/QuickActions";
 import { BsSearch } from "react-icons/bs";
 import Console from "./components/Console";
 import { AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { Options } from "vis-network";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [consoleOpen, setConsoleOpen] = useState(false);
-  const [loadingPct, setLoadingPct] = useState(0);
+  const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
 
   const randomFacts = [
@@ -35,35 +36,65 @@ function App() {
 
     if (loadingPct >= 100) clearInterval(interval);
 
-
     return () => clearInterval(interval);
   }, [loadingPct]);
 
-
-  const options = {};
+  const [options, setOptions] = useState<Options>({
+    nodes: {
+      shape: "dot",
+      size: 16,
+      font: {
+        size: 12,
+        color: "#ffffff",
+      },
+      borderWidth: 2,
+    },
+    edges: {
+      width: 2,
+    },
+    interaction: {
+      hover: true,
+    },
+    physics: {
+      enabled: true,
+      barnesHut: {
+        gravitationalConstant: -80000,
+        centralGravity: 0.3,
+        springLength: 95,
+        springConstant: 0.04,
+        damping: 0.09,
+        avoidOverlap: 0,
+      },
+      maxVelocity: 146,
+      solver: "barnesHut",
+      timestep: 0.5,
+      stabilization: {
+        enabled: true,
+        iterations: 1000,
+        updateInterval: 100000,
+        onlyDynamicEdges: false,
+        fit: true,
+      },
+      adaptiveTimestep: true,
+    },
+  });
 
   const [nodes, setNodes] = useState(
-    new DataSet(
-      [
-        { id: 1, label: "Node 1", x: 0, y: 0 },
-        { id: 2, label: "Node 2", x: 100, y: 0 },
-        { id: 3, label: "Node 3", x: 0, y: 100 },
-        { id: 4, label: "Node 4", x: 100, y: 100 },
-      ],
-      options
-    )
+    new DataSet([
+      { id: 1, label: "Node 1", x: 0, y: 0 },
+      { id: 2, label: "Node 2", x: 100, y: 0 },
+      { id: 3, label: "Node 3", x: 0, y: 100 },
+      { id: 4, label: "Node 4", x: 100, y: 100 },
+    ])
   );
 
   const [edges, setEdges] = useState(
-    new DataSet(
-      [
-        { id: 1, from: 1, to: 2 },
-        { id: 2, from: 1, to: 3 },
-        { id: 3, from: 2, to: 4 },
-        { id: 4, from: 3, to: 4 },
-      ],
-      options
-    )
+    new DataSet([
+      { id: 1, from: 1, to: 2 },
+      { id: 2, from: 1, to: 3 },
+      { id: 3, from: 2, to: 4 },
+      { id: 4, from: 3, to: 4 },
+    ])
   );
 
   useEffect(() => {
@@ -73,32 +104,10 @@ function App() {
       if (e.metaKey || e.ctrlKey) {
         if (e.key == "k") setQuickSearchOpen((state) => !state);
         if (e.key == "i") setConsoleOpen((state) => !state);
-      }
-      else if (e.key == "Escape") {
+      } else if (e.key == "Escape") {
         setQuickSearchOpen(false);
         setConsoleOpen(false);
-      }
-
-      else if (e.key == "Enter") {
-        // add a random node
-        const id = Math.floor(Math.random() * 1000000);
-        const randomRadius = Math.floor(Math.random() * 1000);
-        const randomCOlor = Math.floor(Math.random() * 16777215).toString(16);
-        const color = "#" + randomCOlor;
-        const x = Math.floor(Math.random() * 1000);
-        const y = Math.floor(Math.random() * 1000);
-        nodes.add({ id, x, y, color, label: id.toString(), shape: "circle", size: randomRadius });
-        console.log(nodes);
-        // connect it to a random node that has at least one edge
-        const connectedNodes = nodes.get({
-          filter: (node) => edges.get({ filter: (edge) => edge.to == node.id || edge.from == node.id }).length > 0,
-        });
-        if (connectedNodes.length > 0) {
-          const randomNode = connectedNodes[Math.floor(Math.random() * connectedNodes.length)];
-          const dimmedColor = color + "55";
-          edges.add({ id: Math.floor(Math.random() * 1000000), from: randomNode.id, to: id, color: dimmedColor });
-        }
-
+      } else if (e.key == "Enter") {
       }
     }
 
@@ -128,12 +137,15 @@ function App() {
           ></div>
           {/* quote block */}
           <div className="w-full flex items-center justify-center mt-5 text-gray-200">
-            <blockquote className="text-xl italic font-semibold text-gray-900 dark:text-white
+            <blockquote
+              className="text-xl italic font-semibold text-gray-900 dark:text-white
               p-3 dark:bg-dark-secondary rounded-md shadow-md hover:shadow-lg hover:bg-dark-tertiary
               transition-all duration-300
               cursor-pointer whitespace-nowrap
             "
-              onClick={() => setCurrentFact((fact) => (fact + 1) % randomFacts.length)}
+              onClick={() =>
+                setCurrentFact((fact) => (fact + 1) % randomFacts.length)
+              }
             >
               ❝&nbsp;{randomFacts[currentFact]}&nbsp;❞
             </blockquote>
@@ -153,9 +165,13 @@ function App() {
       relative
       "
     >
-      <Graph edges={edges} nodes={nodes} />
+      <Graph edges={edges} nodes={nodes} options={options} />
       {quickSearchOpen && (
-        <QuickSearch close={() => setQuickSearchOpen(false)} />
+        <QuickActions
+          close={() => setQuickSearchOpen(false)}
+          options={options}
+          setOptions={setOptions}
+        />
       )}
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex items-center justify-end">
