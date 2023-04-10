@@ -92,6 +92,7 @@ const Console = (props: Props) => {
         }
         break;
       default:
+        console.log("Invalid graph builder or not implemented yet (eheh)");
         break;
     }
   }
