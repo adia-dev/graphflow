@@ -6,10 +6,15 @@ import "./App.css";
 import Console from "./components/Console";
 import Graph from "./components/Graph";
 import graphOptions from "./components/Graph/graphOptions";
-import GraphModal from "./components/GraphModal";
+import GraphBuilderOptions from "./components/GraphBuiler/GraphBuilderOptions";
+import { options as graphBuilderOptions } from "./components/GraphBuiler/options";
 import Loading from "./components/Loading";
 import QuickActions from "./components/QuickActions";
 import facts from "./data/facts.json";
+
+
+
+
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -20,6 +25,8 @@ function App() {
   const [nodes, setNodes] = useState(new DataSet([]));
   const [edges, setEdges] = useState(new DataSet([]));
   const [openedModal, setOpenedModal] = useState<string | null>(null);
+  const [graphBuilder, setGraphBuilder] = useState(graphBuilderOptions[0]);
+
 
   // useEffect(() => {
   //   // increase the loading percentage by a random amount to emulate a loading bar
@@ -83,7 +90,11 @@ function App() {
           setOpenedModal={setOpenedModal}
         />
       )}
-      {openedModal && <GraphModal close={() => setOpenedModal(null)} />}
+      {openedModal &&
+        <GraphBuilderOptions
+          close={() => setOpenedModal(null)}
+          setGraphBuilder={setGraphBuilder}
+        />}
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex items-center justify-end">
           <div
@@ -98,7 +109,7 @@ function App() {
           setOpen={setConsoleOpen}
           setNodes={setNodes}
           setEdges={setEdges}
-          graphType={"adjacencyList"}
+          graphBuilder={graphBuilder}
         />
       </div>
     </div>

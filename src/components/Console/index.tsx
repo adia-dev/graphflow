@@ -11,6 +11,7 @@ import {
   MdErrorOutline,
   MdFormatAlignLeft,
 } from "react-icons/md";
+import { IGraphBuilder } from "../GraphBuiler/IGraphBuilderOption";
 import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
   setOpen: (state: boolean) => void;
   setNodes: (nodes: any) => void;
   setEdges: (edges: any) => void;
-  graphType: string;
+  graphBuilder: IGraphBuilder
 };
 
 type History = {
@@ -53,7 +54,8 @@ const Console = (props: Props) => {
 
     let datasets = null;
 
-    switch (props.graphType) {
+    console.log(props.graphBuilder.value);
+    switch (props.graphBuilder.value) {
       case "matrix":
         datasets = generateFromMatrix(ref.current.innerText);
         if (datasets) {
@@ -72,7 +74,7 @@ const Console = (props: Props) => {
           setValid(false);
         }
         break;
-      case "adjacencyList":
+      case "adjacency-list":
         datasets = generateFromAdjacencyList(ref.current.innerText);
         if (datasets) {
           props.setNodes(datasets.nodes);
@@ -136,7 +138,7 @@ const Console = (props: Props) => {
         </div>
       </div>
       <div className="w-full flex-1 p-5 flex flex-col">
-        <span className="dark:text-gray-400 text-xs">{props.graphType} =</span>
+        <span className="dark:text-gray-400 text-xs">{props.graphBuilder.label} =</span>
         <div className="w-full relative mt-2">
           <div
             className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto dark:bg-dark-tertiary border ${valid !== null &&

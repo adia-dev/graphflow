@@ -23,7 +23,7 @@ type SearchItem = {
   category: string;
   icon?: JSX.Element;
   shortcut?: string[];
-  callback?: (self?: SearchItem) => void | Promise<void>;
+  callback?: () => void | Promise<void>;
 };
 
 const QuickActions = (props: Props) => {
@@ -42,6 +42,7 @@ const QuickActions = (props: Props) => {
       shortcut: ["⌘", "⌃", "N"],
       callback: () => {
         props.setOpenedModal("new-graph");
+        props.close();
       },
     },
     {
@@ -159,8 +160,7 @@ const QuickActions = (props: Props) => {
 
         console.log(filteredSearchItems[selectedItem]);
 
-        filteredSearchItems[selectedItem].callback &&
-          filteredSearchItems[selectedItem].callback();
+        filteredSearchItems[selectedItem].callback?.();
       }
     };
 
@@ -234,7 +234,7 @@ const QuickActions = (props: Props) => {
                 key={i}
                 className={`cursor-pointer ${selectedItem === i && "bg-dark-secondary"
                   } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
-                onClick={() => item.callback && item.callback(item)}
+                onClick={() => item.callback && item.callback()}
               >
                 <div className="flex items-center space-x-2">
                   {item.icon && item.icon}
