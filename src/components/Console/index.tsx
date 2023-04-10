@@ -1,32 +1,38 @@
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import {
   BsLayoutSidebarInsetReverse,
   BsPlayFill,
   BsThreeDots,
 } from "react-icons/bs";
+import { CiStreamOff, CiStreamOn } from "react-icons/ci";
 import {
   MdCheckCircleOutline,
   MdErrorOutline,
   MdFormatAlignLeft,
 } from "react-icons/md";
-import { CiStreamOff, CiStreamOn } from "react-icons/ci";
-import { DataSet } from "vis-data";
+import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
 
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
   setNodes: (nodes: any) => void;
   setEdges: (edges: any) => void;
+  graphType: string;
+};
+
+type History = {
+  input: string;
+  valid: boolean;
+  timestamp: number;
 };
 
 const Console = (props: Props) => {
   const [valid, setValid] = useState<boolean | null>(null);
   const [liveInput, setLiveInput] = useState(true);
+  const [history, setHistory] = useState(new Map<string, History>());
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const RE = /^\s*\[(\s*\[\s*(\d+\s*,\s*)*\d+\s*\]\s*,?\s*)*\]\s*$/;
 
   function onInput() {
     if (!liveInput) {
@@ -35,92 +41,64 @@ const Console = (props: Props) => {
       return;
     }
 
+
+    if (!ref.current) return;
+
     generate();
   }
 
-  function formatInput() {
-    if (ref.current) {
-      const content = ref.current.innerText.replace(/\s*/g, "");
-      ref.current.innerHTML = content;
-    }
-  }
-
   function generate() {
-    if (validateInput()) {
-      if (ref.current) {
-        const content = ref.current.innerText.replace(/\s*/g, "");
-        let matrix: (number | string)[][] = JSON.parse(content);
-        let width = 0;
-        matrix.forEach((row) => (width = Math.max(width, row.length)));
 
-        matrix = matrix.map((row) =>
-          row.length < width
-            ? [...row, ...Array(width - row.length).fill(null)]
-            : row
-        );
+    if (!ref.current) return;
 
-        const nodes = matrix
-          .map((row, i) =>
-            row.map((val, j) => {
-              return {
-                id: i * 10 + j,
-                x: j * 100,
-                y: i * 100,
-                label: val ? val.toString() : "-",
-                color: val ? "#6366f1" : "#ffffff25",
-                title: "test",
-              };
-            })
-          )
-          .flat();
+    let datasets = null;
 
-        props.setNodes(new DataSet(nodes, {}));
-
-        const edges = [];
-        const edgeSet = new Set<string>();
-
-        for (let i = 0; i < matrix.length; ++i) {
-          for (let j = 0; j < width; ++j) {
-            const key = `${i}${j}${j}${i}`;
-
-            if (edgeSet.has(key)) continue;
-
-            if (j - 1 >= 0) {
-              edges.push({
-                from: i * 10 + j,
-                to: i * 10 + j - 1,
-                color:
-                  matrix[i][j] && matrix[i][j - 1] ? "#6366f1" : "#ffffff25",
-              });
-              edgeSet.add(key);
-            }
-
-            if (i - 1 >= 0) {
-              edges.push({
-                from: i * 10 + j,
-                to: (i - 1) * 10 + j,
-                color:
-                  matrix[i][j] && matrix[i - 1][j] ? "#6366f1" : "#ffffff25",
-              });
-              edgeSet.add(key);
-            }
+    switch (props.graphType) {
+      case "matrix":
+        datasets = generateFromMatrix(ref.current.innerText);
+        if (datasets) {
+          props.setNodes(datasets.nodes);
+          props.setEdges(datasets.edges);
+          setValid(true);
+          if (datasets.formattedInput) {
+            history.set(datasets.formattedInput, {
+              input: ref.current.innerText,
+              valid: true,
+              timestamp: Date.now(),
+            });
           }
-        }
 
-        props.setEdges(new DataSet(edges, {}));
-      }
+        } else {
+          setValid(false);
+        }
+        break;
+      case "adjacencyList":
+        datasets = generateFromAdjacencyList(ref.current.innerText);
+        if (datasets) {
+          props.setNodes(datasets.nodes);
+          props.setEdges(datasets.edges);
+          setValid(true);
+          if (datasets.formattedInput) {
+            history.set(datasets.formattedInput, {
+              input: ref.current.innerText,
+              valid: true,
+              timestamp: Date.now(),
+            });
+          }
+        } else {
+          setValid(false);
+        }
+        break;
+      default:
+        break;
     }
   }
 
-  function validateInput(_format?: string): boolean {
-    if (ref.current) {
-      const content = ref.current.innerText.replace(/\s*/g, "");
-      const isValid = RE.test(content);
+  function formatInput() {
+    if (!ref.current) return;
 
-      setValid(isValid);
-      return isValid;
-    }
-    return false;
+    const input = ref.current.innerText;
+    ref.current.innerHTML = formatMatrix(input);
   }
 
   return (
@@ -151,25 +129,21 @@ const Console = (props: Props) => {
           <div className="flex items-center space-x-3">
             <BiChevronDown
               onClick={() => props.setOpen(!props.open)}
-              className={`${
-                !props.open && "rotate-180"
-              } transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
+              className={`${!props.open && "rotate-180"} transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
             />
             <BsLayoutSidebarInsetReverse />
           </div>
         </div>
       </div>
       <div className="w-full flex-1 p-5 flex flex-col">
-        <span className="dark:text-gray-400 text-xs">grid =</span>
+        <span className="dark:text-gray-400 text-xs">{props.graphType} =</span>
         <div className="w-full relative mt-2">
           <div
-            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto dark:bg-dark-tertiary border 
-                      ${
-                        valid !== null &&
-                        (valid
-                          ? "text-green-500 dark:border-green-500 dark:bg-green-500 dark:bg-opacity-10"
-                          : "text-red-500 dark:border-red-500 dark:bg-red-500 dark:bg-opacity-10")
-                      }`}
+            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto dark:bg-dark-tertiary border ${valid !== null &&
+              (valid
+                ? "text-green-500 dark:border-green-500 dark:bg-green-500 dark:bg-opacity-10"
+                : "text-red-500 dark:border-red-500 dark:bg-red-500 dark:bg-opacity-10")
+              }`}
             ref={ref}
             onInput={onInput}
             contentEditable={true}
@@ -199,7 +173,7 @@ const Console = (props: Props) => {
           <button
             type="button"
             onClick={() => props.setOpen(false)}
-            className="dark:bg-red-500 hover:bg-red-700 px-3 py-2 rounded-lg"
+            className="dark:bg-dark-secondary hover:bg-dark-tertiary px-3 py-2 rounded-lg border dark:border-dark-tertiary"
           >
             Close
           </button>

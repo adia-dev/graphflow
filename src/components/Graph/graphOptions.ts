@@ -27,22 +27,22 @@ export default {
     //   bindToWindow: true,
     // },
   },
-  // layout: {
-  //   randomSeed: 1,
-  //   improvedLayout: true,
-  //   hierarchical: {
-  //     enabled: true,
-  //     levelSeparation: 100,
-  //     nodeSpacing: 300,
-  //     treeSpacing: 100,
-  //     blockShifting: true,
-  //     edgeMinimization: true,
-  //     parentCentralization: true,
-  //     direction: "LR", // UD, DU, LR, RL
-  //     sortMethod: "directed", // hubsize, directed
-  //     shakeTowards: "roots", // roots, leaves
-  //   },
-  // },
+  layout: {
+    randomSeed: 1,
+    improvedLayout: true,
+    hierarchical: {
+      enabled: true,
+      levelSeparation: 100,
+      nodeSpacing: 300,
+      treeSpacing: 100,
+      blockShifting: false,
+      edgeMinimization: false,
+      parentCentralization: true,
+      direction: "LR", // UD, DU, LR, RL
+      sortMethod: "directed", // hubsize, directed
+      shakeTowards: "roots", // roots, leaves
+    },
+  },
   physics: {
     enabled: true,
     barnesHut: {

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { DataSet } from "vis-data";
-import "./App.css";
-import Graph from "./components/Graph";
-import QuickActions from "./components/QuickActions";
 import { BsSearch } from "react-icons/bs";
-import Console from "./components/Console";
+import { DataSet } from "vis-data";
 import { Options } from "vis-network";
-import facts from "./data/facts.json";
-import Loading from "./components/Loading";
+import "./App.css";
+import Console from "./components/Console";
+import Graph from "./components/Graph";
 import graphOptions from "./components/Graph/graphOptions";
 import GraphModal from "./components/GraphModal";
+import Loading from "./components/Loading";
+import QuickActions from "./components/QuickActions";
+import facts from "./data/facts.json";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -21,17 +21,17 @@ function App() {
   const [edges, setEdges] = useState(new DataSet([]));
   const [openedModal, setOpenedModal] = useState<string | null>(null);
 
-  useEffect(() => {
-    // increase the loading percentage by a random amount to emulate a loading bar
-    const interval = setInterval(() => {
-      setLoadingPct((pct) => Math.min(pct + Math.random() * 75, 101));
-      setCurrentFact((fact) => (fact + 1) % facts.length);
-    }, 2000);
+  // useEffect(() => {
+  //   // increase the loading percentage by a random amount to emulate a loading bar
+  //   const interval = setInterval(() => {
+  //     setLoadingPct((pct) => Math.min(pct + Math.random() * 75, 101));
+  //     setCurrentFact((fact) => (fact + 1) % facts.length);
+  //   }, 2000);
 
-    if (loadingPct >= 100) clearInterval(interval);
+  //   if (loadingPct >= 100) clearInterval(interval);
 
-    return () => clearInterval(interval);
-  }, [loadingPct]);
+  //   return () => clearInterval(interval);
+  // }, [loadingPct]);
 
   useEffect(() => {
     function handleShortcut(e: KeyboardEvent) {
@@ -98,6 +98,7 @@ function App() {
           setOpen={setConsoleOpen}
           setNodes={setNodes}
           setEdges={setEdges}
+          graphType={"adjacencyList"}
         />
       </div>
     </div>
