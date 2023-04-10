@@ -6,6 +6,7 @@ import {
   TbArrowMoveRight,
   TbBinaryTree,
   TbBinaryTree2,
+  TbCircuitChangeover,
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { Options } from "vis-network";
@@ -13,6 +14,7 @@ import { Options } from "vis-network";
 type Props = {
   close: () => void;
   setOptions: (options: any) => void;
+  setOpenedModal: (modal: string | null) => void;
   options: Options;
 };
 
@@ -32,6 +34,15 @@ const QuickActions = (props: Props) => {
       icon: <TbBinaryTree />,
       category: "trees",
       shortcut: ["⌘", "⌃", "N"],
+    },
+    {
+      name: "New Graph",
+      icon: <TbCircuitChangeover />,
+      category: "graphs",
+      shortcut: ["⌘", "⌃", "N"],
+      callback: () => {
+        props.setOpenedModal("new-graph");
+      },
     },
     {
       name: "Binary Tree",
@@ -135,7 +146,7 @@ const QuickActions = (props: Props) => {
       }
     };
 
-    const handleKeydown = (e: React.KeyboardEvent) => {
+    const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === "Escape") props.close();
 
       if (e.key === "Enter") {
@@ -153,7 +164,7 @@ const QuickActions = (props: Props) => {
       }
     };
 
-    const handleKeyup = (e: React.KeyboardEvent) => {
+    const handleKeyup = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         if (selectedItem - 1 < 0)
           setSelectedItem((_item) => filteredSearchItems.length - 1);
@@ -221,9 +232,8 @@ const QuickActions = (props: Props) => {
             {filteredSearchItems.map((item, i) => (
               <div
                 key={i}
-                className={`cursor-pointer ${
-                  selectedItem === i && "bg-dark-secondary"
-                } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
+                className={`cursor-pointer ${selectedItem === i && "bg-dark-secondary"
+                  } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback(item)}
               >
                 <div className="flex items-center space-x-2">

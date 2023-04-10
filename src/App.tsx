@@ -9,6 +9,7 @@ import { Options } from "vis-network";
 import facts from "./data/facts.json";
 import Loading from "./components/Loading";
 import graphOptions from "./components/Graph/graphOptions";
+import GraphModal from "./components/GraphModal";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -18,6 +19,7 @@ function App() {
   const [options, setOptions] = useState<Options>(graphOptions);
   const [nodes, setNodes] = useState(new DataSet([]));
   const [edges, setEdges] = useState(new DataSet([]));
+  const [openedModal, setOpenedModal] = useState<string | null>(null);
 
   useEffect(() => {
     // increase the loading percentage by a random amount to emulate a loading bar
@@ -78,8 +80,10 @@ function App() {
           close={() => setQuickSearchOpen(false)}
           options={options}
           setOptions={setOptions}
+          setOpenedModal={setOpenedModal}
         />
       )}
+      {openedModal && <GraphModal close={() => setOpenedModal(null)} />}
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex items-center justify-end">
           <div
