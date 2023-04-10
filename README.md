@@ -6,7 +6,7 @@ Welcome to GraphFlow, a React Typescript application that allows you to visualiz
 
 ## Demo Video
 
-Check out the demo video to see GraphFlow in action! ![demo video](./assets/demos/demo_1.gif)
+Check out the demo video to see GraphFlow in action! ![demo video](./assets/demos/demo_2.mp4)
 
 ## Getting Started
 
@@ -19,6 +19,11 @@ I really enjoy solving [LeetCode](https://leetcode.com/adia-dev/) problems and I
 ## Usage
 
 Using GraphFlow is easy! Start by entering your input in the form of a matrix. Once you've entered your input, simply click on the "Submit" button and GraphFlow will display the corresponding graph based on your input. It's that simple!
+
+### Quick Actions
+
+Make sure to use the `Quick Actions` (cmd+k on Mac) to quickly add/remove nodes and edges. You can also use the `Quick Actions` to add/remove weights from edges and more to come!
+![quick actions](./assets/screenshots/quick_actions.png)
 
 ## Future Plans
 
