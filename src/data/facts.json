@@ -1,0 +1,12 @@
+[
+  "Graphflow helps you visualize your data !",
+  "It is as easy as copy-pasting your data into the console !",
+  "Graphflow is a work in progress, so please be patient with me !",
+  "Graphflow is open source, so feel free to contribute !",
+  "The console supports live input, so you can see your graph update as you type !",
+  "Graphflow is built with React, Typescript, and Vis.js",
+  "Checkout my other projects on my Github page ! (@adia-dev)",
+  "I am a student at the school ESGI in Paris, France",
+  "You can use the keyboard shortcuts Ctrl/Cmd + K to open the quick search, and Ctrl/Cmd + I to open the console",
+  "You can use the keyboard shortcut Escape to close the quick search and the console"
+]

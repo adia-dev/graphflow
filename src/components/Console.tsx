@@ -23,7 +23,7 @@ type Props = {
 
 const Console = (props: Props) => {
   const [valid, setValid] = useState<boolean | null>(null);
-  const [liveInput, setLiveInput] = useState(false);
+  const [liveInput, setLiveInput] = useState(true);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const RE = /^\s*\[(\s*\[\s*(\d+\s*,\s*)*\d+\s*\]\s*,?\s*)*\]\s*$/;
@@ -68,6 +68,7 @@ const Console = (props: Props) => {
                 y: i * 100,
                 label: val ? val.toString() : "-",
                 color: val ? "#6366f1" : "#ffffff25",
+                title: "test",
               };
             })
           )

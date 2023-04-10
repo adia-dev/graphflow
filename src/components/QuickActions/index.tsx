@@ -6,7 +6,7 @@ import { Options } from "vis-network";
 
 type Props = {
   close: () => void;
-  setOptions: (options: Options) => void;
+  setOptions: (options: any) => void;
   options: Options;
 };
 
@@ -51,12 +51,12 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "P"],
       callback: () => {
-        props.setOptions((options: Options) => {
+        props.setOptions((options: any) => {
           return {
             ...options,
             physics: {
               ...options.physics,
-              enabled: !options.physics.enabled,
+              enabled: false,
             },
           };
         });

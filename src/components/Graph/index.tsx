@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { DataSet, Edge, Network, Node, Options } from "vis-network";
+export * from "./graphOptions";
 
 type Props = {
   nodes: Node[] | DataSet<Node>;
@@ -23,6 +24,7 @@ const Graph = ({ nodes, edges, options }: Props) => {
       );
 
     if (network) {
+      var radius = 150;
     }
   }, [ref, nodes, edges, options]);
 
