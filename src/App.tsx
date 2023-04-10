@@ -76,7 +76,6 @@ function App() {
       className="w-screen h-screen overflow-hidden
       bg-gray-200 dark:bg-dark-primary
       block 
-      grid-background
       galaxy-background
       relative
       "
