@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
-import { TbArrowBounce, TbBinaryTree, TbBinaryTree2 } from "react-icons/tb";
+import { GrDirections } from "react-icons/gr";
+import {
+  TbArrowBounce,
+  TbArrowMoveRight,
+  TbBinaryTree,
+  TbBinaryTree2,
+} from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { Options } from "vis-network";
 
@@ -56,13 +62,35 @@ const QuickActions = (props: Props) => {
             ...options,
             physics: {
               ...options.physics,
-              enabled: false,
+              enabled: !options.physics.enabled,
             },
           };
         });
 
-        console.log(props.options);
-        console.log(`physics enabled: ${props.options.physics.enabled}`);
+        props.close();
+      },
+    },
+    {
+      name: "Toggle Edge Arrows",
+      icon: <TbArrowMoveRight />,
+      category: "config",
+      shortcut: ["⌘", "⌃", "D"],
+      callback: () => {
+        props.setOptions((options: any) => {
+          return {
+            ...options,
+            edges: {
+              ...options.edges,
+              arrows: {
+                to: {
+                  ...options.edges.arrows.to,
+                  enabled: !options.edges.arrows.to.enabled,
+                },
+              },
+            },
+          };
+        });
+
         props.close();
       },
     },

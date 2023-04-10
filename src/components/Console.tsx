@@ -173,6 +173,7 @@ const Console = (props: Props) => {
             ref={ref}
             onInput={onInput}
             contentEditable={true}
+            autoFocus={true}
           />
           <div className="absolute h-full flex items-center right-3 top-0">
             {valid !== null &&
