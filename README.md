@@ -6,7 +6,7 @@ Welcome to GraphFlow, a React Typescript application that allows you to visualiz
 
 ## Demo Video
 
-Check out the demo video to see GraphFlow in action! ![demo video](./assets/demos/demo_2.mp4)
+Check out the demo video to see GraphFlow in action! ![demo video](./assets/demos/demo_2.gif)
 
 ## Getting Started
 
