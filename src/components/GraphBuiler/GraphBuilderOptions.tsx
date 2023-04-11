@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { options } from "./options";
 import { IGraphBuilder } from "./IGraphBuilderOption";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 
 type Props = {
@@ -37,14 +38,18 @@ const GraphBuilderOptions = (props: Props) => {
 
   const GraphBuilderOption = ({ option }: { option: IGraphBuilder }) => {
     return (
-      <li className=""
+      <li className="relative"
         onClick={() => {
-          // option.callback && option.callback();
           props.setGraphBuilder(option);
-          // console.log(option);
           props.close();
         }}
       >
+        {option.notimplemented && (
+          <div className="absolute top-2 right-2">
+            <RiErrorWarningFill />
+          </div>
+        )
+        }
         <input
           type="checkbox"
           id="react-option"
@@ -54,7 +59,15 @@ const GraphBuilderOptions = (props: Props) => {
         />
         <label
           htmlFor={option.label}
-          className="inline-flex items-center justify-between w-full p-5 h-[200px] text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-dark-tertiary peer-checked:border-primbg-primary-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-dark-secondary dark:hover:bg-dark-tertiary"
+          className="inline-flex items-center justify-between w-full p-5 h-[200px] text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-dark-tertiary peer-checked:border-primbg-primary-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-dark-secondary dark:hover:bg-dark-tertiary
+            transition duration-200 ease-in-out
+            group relative
+          "
+          style={{
+            cursor: option.notimplemented ? "not-allowed" : "pointer",
+            filter: option.notimplemented ? "brightness(0.5)" : "none",
+          }}
+
         >
           <div className="flex flex-col items-center text-center">
             {option.icon}
@@ -65,6 +78,16 @@ const GraphBuilderOptions = (props: Props) => {
               {option.shortDescription}
             </div>
           </div>
+          {
+            option.notimplemented && <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center group-hover:translate-y-0 translate-y-3 trnaistion-all duration-300 ease-in-out">
+              <div className="w-3/4 p-3 rounded-2xl bg-black flex flex-col items-center text-red-500">
+                <RiErrorWarningFill />
+                <div className="text-xs text-red-500 text-center">
+                  Not implemented yet
+                </div>
+              </div>
+            </div>
+          }
         </label>
       </li>
     )

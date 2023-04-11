@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
+import { useEffect, useRef, useState } from "react";
+import { BiChevronDown, BiInfoCircle } from "react-icons/bi";
 import {
+  BsFillInfoCircleFill,
   BsLayoutSidebarInsetReverse,
   BsPlayFill,
   BsThreeDots,
@@ -32,8 +33,44 @@ const Console = (props: Props) => {
   const [valid, setValid] = useState<boolean | null>(null);
   const [liveInput, setLiveInput] = useState(true);
   const [history, setHistory] = useState(new Map<string, History>());
+  const [showExamples, setShowExamples] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+
+    // handle the Shift key to show examples
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.shiftKey) {
+        setShowExamples(true);
+        if (e.key === "Enter") {
+          if (ref.current) {
+            ref.current.innerText = props.graphBuilder.exampleValue;
+            formatInput();
+            generate();
+          }
+        }
+      }
+    };
+
+    const handleKeyup = (e: KeyboardEvent) => {
+      if (e.key === "Shift") {
+        setShowExamples(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("keyup", handleKeyup);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener("keyup", handleKeyup);
+      setShowExamples(false);
+    };
+  }, []);
 
   function onInput() {
     if (!liveInput) {
@@ -113,7 +150,7 @@ const Console = (props: Props) => {
         z-10
         dark:text-gray-200
         transition-all duration-300 ease-in-out
-        overflow-y-hidden
+
         flex flex-col
       "
       style={{
@@ -139,7 +176,39 @@ const Console = (props: Props) => {
         </div>
       </div>
       <div className="w-full flex-1 p-5 flex flex-col">
-        <span className="dark:text-gray-400 text-xs">{props.graphBuilder.label} =</span>
+        <div className="flex items-center space-x-2 dark:text-gray-400 text-xs">
+          <span>
+            {props.graphBuilder.label} =
+          </span>
+          <div className="relative group cursor-help">
+            <BsFillInfoCircleFill />
+            {/* group hover popup with the information of the graphBuilder */}
+            <div className="absolute bottom-full z-50 left-0 w-64 bg-white dark:bg-dark-tertiary dark:text-gray-200 rounded-md shadow-md p-3 pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">
+                  {props.graphBuilder.label}
+                </h3>
+                <BsFillInfoCircleFill />
+              </div>
+              <p className="text-sm">
+                {props.graphBuilder.description}
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                (Press Shift to see the examples and Enter to use it as input)
+              </p>
+              {showExamples && (
+                <div className="mt-2">
+                  <h4 className="text-sm font-semibold">
+                    Examples
+                  </h4>
+                  <div className="flex flex-col space-y-2 white">
+                    {props.graphBuilder.example}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
         <div className="w-full relative mt-2">
           <div
             className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto dark:bg-dark-tertiary border ${valid !== null &&
@@ -200,7 +269,7 @@ const Console = (props: Props) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
