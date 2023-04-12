@@ -1,10 +1,12 @@
-export default {
+import { Options } from "vis-network";
+
+const graphOptions: Options = {
   nodes: {
     shape: "dot",
     size: 16,
     font: {
       size: 12,
-      color: "#ffffff",
+      color: "#000000",
     },
     borderWidth: 2,
   },
@@ -66,3 +68,5 @@ export default {
     adaptiveTimestep: true,
   },
 };
+
+export default graphOptions;

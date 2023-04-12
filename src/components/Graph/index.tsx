@@ -28,7 +28,7 @@ const Graph = ({ nodes, edges, options }: Props) => {
     }
   }, [ref, nodes, edges, options]);
 
-  return <div ref={ref} className="w-full h-full"></div>;
+  return <div ref={ref} className="w-full h-full dark:text-white"></div>;
 };
 
 export default Graph;

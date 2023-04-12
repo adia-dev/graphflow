@@ -39,7 +39,7 @@ const Console = (props: Props) => {
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.focus();
+      props.open && ref.current.focus();
     }
 
     // handle the Shift key to show examples
@@ -57,6 +57,8 @@ const Console = (props: Props) => {
     };
 
     const handleKeyup = (e: KeyboardEvent) => {
+      if (!props.open) return;
+
       if (e.key === "Shift") {
         setShowExamples(false);
       }
@@ -145,12 +147,12 @@ const Console = (props: Props) => {
     <div
       className="w-full
         border-2
+        bg-white
         dark:bg-dark-primary dark:border-dark-secondary
         dark:bg-opacity-60 backdrop-blur
         z-10
         dark:text-gray-200
         transition-all duration-300 ease-in-out
-
         flex flex-col
       "
       style={{
@@ -160,7 +162,7 @@ const Console = (props: Props) => {
       <div className="w-full">
         <div
           onClick={() => props.setOpen(!props.open)}
-          className="text-gray-500 hover:bg-primary-500 hover:text-white transition-all duration-500 ease-in-out w-full h-2 dark:bg-dark-tertiary cursor-row-resize flex items-center justify-center"
+          className="text-gray-500 hover:bg-primary-500 hover:text-white transition-all duration-500 ease-in-out w-full h-2 bg-gray-300 dark:bg-dark-tertiary cursor-row-resize flex items-center justify-center"
         >
           <BsThreeDots />
         </div>
@@ -211,10 +213,10 @@ const Console = (props: Props) => {
         </div>
         <div className="w-full relative mt-2">
           <div
-            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto dark:bg-dark-tertiary border ${valid !== null &&
+            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto bg-gray-200 focus:ring-0 focus:outline-none outline-none dark:bg-dark-tertiary border border-gray-300 ${valid !== null &&
               (valid
-                ? "text-green-500 dark:border-green-500 dark:bg-green-500 dark:bg-opacity-10"
-                : "text-red-500 dark:border-red-500 dark:bg-red-500 dark:bg-opacity-10")
+                ? "text-green-500 border-green-500 bg-green-500 bg-opacity-10"
+                : "text-red-500 border-red-500 bg-red-500 bg-opacity-10")
               }`}
             ref={ref}
             onInput={onInput}
@@ -252,7 +254,7 @@ const Console = (props: Props) => {
           <div className="flex items-center space-x-3">
             <button
               type="button"
-              className="dark:bg-primary-500 hover:bg-primary-700 px-3 py-2 flex items-center space-x-3 rounded-lg"
+              className="bg-primary-500 text-white hover:bg-primary-700 px-3 py-2 flex items-center space-x-3 rounded-lg"
               onClick={formatInput}
             >
               <span>Format</span>
@@ -260,7 +262,7 @@ const Console = (props: Props) => {
             </button>
             <button
               type="button"
-              className="dark:bg-secondary-500 hover:bg-secondary-700 px-3 py-2 flex items-center space-x-3 rounded-lg"
+              className="bg-secondary-500 text-white hover:bg-secondary-700 px-3 py-2 flex items-center space-x-3 rounded-lg"
               onClick={generate}
             >
               <span>Generate</span>
