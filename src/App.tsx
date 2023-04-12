@@ -21,76 +21,6 @@ import { closeQuickActions, toggleOpenQuickActions } from "./features/QuickActio
 function App() {
   const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
-  const [options, setOptions] = useState<Options>({
-    nodes: {
-      shape: "dot",
-      size: 16,
-      font: {
-        size: 12,
-        color: "inherit",
-      },
-      borderWidth: 2,
-    },
-    edges: {
-      width: 2,
-      smooth: false,
-      arrows: {
-        to: { enabled: true, scaleFactor: 0.5 },
-      },
-    },
-    interaction: {
-      hover: true,
-      hoverConnectedEdges: true,
-      selectable: true,
-      selectConnectedEdges: true,
-      // navigationButtons: true,
-      // keyboard: {
-      //   enabled: true,
-      //   speed: { x: 10, y: 10, zoom: 0.03 },
-      //   bindToWindow: true,
-      // },
-    },
-    // layout: {
-    //   randomSeed: 1,
-    //   improvedLayout: true,
-    //   hierarchical: {
-    //     enabled: true,
-    //     levelSeparation: 100,
-    //     nodeSpacing: 300,
-    //     treeSpacing: 100,
-    //     blockShifting: false,
-    //     edgeMinimization: false,
-    //     parentCentralization: true,
-    //     direction: "LR", // UD, DU, LR, RL
-    //     sortMethod: "directed", // hubsize, directed
-    //     shakeTowards: "roots", // roots, leaves
-    //   },
-    // },
-    physics: {
-      enabled: true,
-      barnesHut: {
-        gravitationalConstant: -80000,
-        centralGravity: 0.3,
-        springLength: 95,
-        springConstant: 0.04,
-        damping: 0.09,
-        avoidOverlap: 0,
-      },
-      maxVelocity: 146,
-      solver: "barnesHut",
-      timestep: 0.5,
-      stabilization: {
-        enabled: true,
-        iterations: 1000,
-        updateInterval: 100000,
-        onlyDynamicEdges: false,
-        fit: true,
-      },
-      adaptiveTimestep: true,
-    },
-  });
-  const [nodes, setNodes] = useState(new DataSet([]));
-  const [edges, setEdges] = useState(new DataSet([]));
   const [openedModal, setOpenedModal] = useState<string | null>(null);
   const [graphBuilder, setGraphBuilder] = useState(graphBuilderOptions[0]);
 
@@ -98,6 +28,7 @@ function App() {
   const quickActionOpened = useAppSelector(state => state.quickActions.opened);
 
 
+  //? This is for the loading screen
   // useEffect(() => {
   //   // increase the loading percentage by a random amount to emulate a loading bar
   //   const interval = setInterval(() => {
@@ -129,7 +60,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleShortcut);
     };
-  }, [nodes]);
+  }, []);
 
   if (loadingPct <= 100) {
     return (
@@ -149,12 +80,10 @@ function App() {
       galaxy-background
       "
     >
-      <Graph edges={edges} nodes={nodes} options={options} />
+      <Graph />
       {quickActionOpened && (
         <QuickActions
           close={() => dispatch(closeQuickActions())}
-          options={options}
-          setOptions={setOptions}
           setOpenedModal={setOpenedModal}
         />
       )}
@@ -173,8 +102,6 @@ function App() {
           </div>
         </div>
         <Console
-          setNodes={setNodes}
-          setEdges={setEdges}
           graphBuilder={graphBuilder}
         />
       </div>

@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import consoleSlice from "../features/Console/consoleSlice";
 import quickActionsSlice from "../features/QuickActions/quickActionsSlice";
+import graphSlice from "../features/Graph/graphSlice";
 
 const store = configureStore({
   reducer: {
     console: consoleSlice,
     quickActions: quickActionsSlice,
+    graph: graphSlice,
   },
 });
 

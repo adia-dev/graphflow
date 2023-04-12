@@ -1,15 +1,16 @@
-import React, { useEffect, useRef } from "react";
-import { DataSet, Edge, Network, Node, Options } from "vis-network";
-export * from "./graphOptions";
+import { useEffect, useRef } from "react";
+import { Network } from "vis-network";
+import { useAppSelector } from "../../app/hooks";
+import { selectGraph } from "./graphSlice";
+export * from "./options";
 
 type Props = {
-  nodes: Node[] | DataSet<Node>;
-  edges: Edge[] | DataSet<Edge>;
-  options?: Options;
+
 };
 
-const Graph = ({ nodes, edges, options }: Props) => {
+const Graph = (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const { nodes, edges, options } = useAppSelector(selectGraph);
 
   useEffect(() => {
     const network =

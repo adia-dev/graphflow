@@ -8,13 +8,12 @@ import {
   TbCircuitChangeover,
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
-import { Options } from "vis-network";
+import { useAppDispatch } from "../../app/hooks";
+import { setGraphOptions } from "../Graph/graphSlice";
 
 type Props = {
   close: () => void;
-  setOptions: (options: any) => void;
   setOpenedModal: (modal: string | null) => void;
-  options: Options;
 };
 
 type SearchItem = {
@@ -26,6 +25,8 @@ type SearchItem = {
 };
 
 const QuickActions = (props: Props) => {
+  const dispatch = useAppDispatch()
+
   const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
   const searchItems: SearchItem[] = [
     {
@@ -68,7 +69,7 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "P"],
       callback: () => {
-        props.setOptions((options: any) => {
+        dispatch(setGraphOptions((options: any) => {
           return {
             ...options,
             physics: {
@@ -76,7 +77,7 @@ const QuickActions = (props: Props) => {
               enabled: !options.physics.enabled,
             },
           };
-        });
+        }));
 
         props.close();
       },
@@ -87,7 +88,7 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "D"],
       callback: () => {
-        props.setOptions((options: any) => {
+        dispatch(setGraphOptions((options: any) => {
           return {
             ...options,
             edges: {
@@ -95,14 +96,20 @@ const QuickActions = (props: Props) => {
               arrows: {
                 to: {
                   ...options.edges.arrows.to,
-                  enabled: !options.edges.arrows.to.enabled,
+                  arrows: {
+                    to: {
+                      ...options.edges.arrows.to,
+                      enabled: !options.edges.arrows.to.enabled,
+                    },
+                  },
                 },
               },
             },
           };
-        });
+        }));
 
         props.close();
+
       },
     },
   ];

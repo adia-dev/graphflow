@@ -16,10 +16,9 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { IGraphBuilder } from "../../components/GraphBuiler/IGraphBuilderOption";
 import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
 import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
+import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 
 type Props = {
-  setNodes: (nodes: any) => void;
-  setEdges: (edges: any) => void;
   graphBuilder: IGraphBuilder
 };
 
@@ -37,7 +36,9 @@ const Console = (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const isOpened = useAppSelector((state) => state.console.opened);
+  const { nodes, edges } = useAppSelector(selectGraph);
   const dispatch = useAppDispatch();
+
 
 
   useEffect(() => {
@@ -101,8 +102,8 @@ const Console = (props: Props) => {
       case "matrix":
         datasets = generateFromMatrix(ref.current.innerText);
         if (datasets) {
-          props.setNodes(datasets.nodes);
-          props.setEdges(datasets.edges);
+          dispatch(setGraphNodes(datasets.nodes));
+          dispatch(setGraphEdges(datasets.edges));
           setValid(true);
           if (datasets.formattedInput) {
             history.set(datasets.formattedInput, {
@@ -119,8 +120,8 @@ const Console = (props: Props) => {
       case "adjacency-list":
         datasets = generateFromAdjacencyList(ref.current.innerText);
         if (datasets) {
-          props.setNodes(datasets.nodes);
-          props.setEdges(datasets.edges);
+          dispatch(setGraphNodes(datasets.nodes));
+          dispatch(setGraphEdges(datasets.edges));
           setValid(true);
           if (datasets.formattedInput) {
             history.set(datasets.formattedInput, {

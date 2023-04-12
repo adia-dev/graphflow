@@ -1,12 +1,12 @@
 import { Options } from "vis-network";
 
-const graphOptions: Options = {
+const options: Options = {
   nodes: {
     shape: "dot",
     size: 16,
     font: {
       size: 12,
-      color: "#000000",
+      color: "inherit",
     },
     borderWidth: 2,
   },
@@ -69,4 +69,4 @@ const graphOptions: Options = {
   },
 };
 
-export default graphOptions;
+export default options;
