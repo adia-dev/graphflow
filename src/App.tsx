@@ -1,32 +1,29 @@
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { DataSet } from "vis-data";
-import { Options } from "vis-network";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import Graph from "./features/Graph";
-import GraphBuilderOptions from "./components/GraphBuiler/GraphBuilderOptions";
-import { options as graphBuilderOptions } from "./components/GraphBuiler/options";
 import Loading from "./components/Loading";
 import facts from "./data/facts.json";
 import Console from "./features/Console";
-import { closeConsole, toggleOpenConsole } from "./features/Console/consoleSlice";
+import {
+  closeConsole,
+  toggleOpenConsole,
+} from "./features/Console/consoleSlice";
+import Graph from "./features/Graph";
 import QuickActions from "./features/QuickActions";
-import { closeQuickActions, toggleOpenQuickActions } from "./features/QuickActions/quickActionsSlice";
-
-
-
-
+import {
+  closeQuickActions,
+  toggleOpenQuickActions,
+} from "./features/QuickActions/quickActionsSlice";
 
 function App() {
   const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
-  const [openedModal, setOpenedModal] = useState<string | null>(null);
-  const [graphBuilder, setGraphBuilder] = useState(graphBuilderOptions[0]);
 
   const dispatch = useAppDispatch();
-  const quickActionOpened = useAppSelector(state => state.quickActions.opened);
-
+  const quickActionOpened = useAppSelector(
+    (state) => state.quickActions.opened
+  );
 
   //? This is for the loading screen
   // useEffect(() => {
@@ -84,14 +81,8 @@ function App() {
       {quickActionOpened && (
         <QuickActions
           close={() => dispatch(closeQuickActions())}
-          setOpenedModal={setOpenedModal}
         />
       )}
-      {openedModal &&
-        <GraphBuilderOptions
-          close={() => setOpenedModal(null)}
-          setGraphBuilder={setGraphBuilder}
-        />}
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex items-center justify-end">
           <div
@@ -101,9 +92,7 @@ function App() {
             <BsSearch />
           </div>
         </div>
-        <Console
-          graphBuilder={graphBuilder}
-        />
+        <Console />
       </div>
     </div>
   );

@@ -9,11 +9,11 @@ import {
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { useAppDispatch } from "../../app/hooks";
+import GraphBuilderOptions from "../Graph/components/GraphBuilderOptions";
 import { setGraphOptions } from "../Graph/graphSlice";
 
 type Props = {
   close: () => void;
-  setOpenedModal: (modal: string | null) => void;
 };
 
 type SearchItem = {
@@ -26,6 +26,7 @@ type SearchItem = {
 
 const QuickActions = (props: Props) => {
   const dispatch = useAppDispatch()
+  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] = useState(false);
 
   const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
   const searchItems: SearchItem[] = [
@@ -41,8 +42,7 @@ const QuickActions = (props: Props) => {
       category: "graphs",
       shortcut: ["⌘", "⌃", "N"],
       callback: () => {
-        props.setOpenedModal("new-graph");
-        props.close();
+        setGraphBuilderOptionsOpened(true);
       },
     },
     {
@@ -209,8 +209,22 @@ const QuickActions = (props: Props) => {
           overflow-hidden
           text-lg
           shadow-xl
+
           "
         >
+          {
+            graphBuilderOptionsOpened && (
+              <GraphBuilderOptions
+                close={() => {
+                  setGraphBuilderOptionsOpened(false)
+                }}
+                closeAll={() => {
+                  setGraphBuilderOptionsOpened(false)
+                  props.close()
+                }}
+              />
+            )
+          }
           <form className="" onSubmit={onSubmit}>
             <div className="flex items-center relative">
               <BiSearch className="absolute left-5" />

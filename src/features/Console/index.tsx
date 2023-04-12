@@ -13,13 +13,12 @@ import {
   MdFormatAlignLeft,
 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { IGraphBuilder } from "../../components/GraphBuiler/IGraphBuilderOption";
+import builders from "../Graph/builders";
+import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
 import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
-import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 
 type Props = {
-  graphBuilder: IGraphBuilder
 };
 
 type History = {
@@ -37,6 +36,7 @@ const Console = (props: Props) => {
 
   const isOpened = useAppSelector((state) => state.console.opened);
   const { nodes, edges } = useAppSelector(selectGraph);
+  const builderIndex = useAppSelector((state) => state.graph.builderIndex);
   const dispatch = useAppDispatch();
 
 
@@ -52,7 +52,7 @@ const Console = (props: Props) => {
         setShowExamples(true);
         if (e.key === "Enter") {
           if (ref.current) {
-            ref.current.innerText = props.graphBuilder.exampleValue;
+            ref.current.innerText = builders[builderIndex].exampleValue;
             formatInput();
             generate();
           }
@@ -97,8 +97,8 @@ const Console = (props: Props) => {
 
     let datasets = null;
 
-    console.log(props.graphBuilder.value);
-    switch (props.graphBuilder.value) {
+    console.log(builders[builderIndex].value, builderIndex);
+    switch (builders[builderIndex].value) {
       case "matrix":
         datasets = generateFromMatrix(ref.current.innerText);
         if (datasets) {
@@ -196,7 +196,7 @@ const Console = (props: Props) => {
       <div className="w-full flex-1 p-5 flex flex-col">
         <div className="flex items-center space-x-2 dark:text-gray-400 text-xs">
           <span>
-            {props.graphBuilder.label} =
+            {builders[builderIndex].label} =
           </span>
           <div className="relative group cursor-help">
             <BsFillInfoCircleFill />
@@ -204,12 +204,12 @@ const Console = (props: Props) => {
             <div className="absolute bottom-full z-50 left-0 w-64 bg-white dark:bg-dark-tertiary dark:text-gray-200 rounded-md shadow-md p-3 pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">
-                  {props.graphBuilder.label}
+                  {builders[builderIndex].label}
                 </h3>
                 <BsFillInfoCircleFill />
               </div>
               <p className="text-sm">
-                {props.graphBuilder.description}
+                {builders[builderIndex].description}
               </p>
               <p className="text-xs text-gray-500 mt-2">
                 (Press Shift to see the examples and Enter to use it as input)
@@ -220,7 +220,7 @@ const Console = (props: Props) => {
                     Examples
                   </h4>
                   <div className="flex flex-col space-y-2 white">
-                    {props.graphBuilder.example}
+                    {builders[builderIndex].example}
                   </div>
                 </div>
               )}

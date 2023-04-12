@@ -1,12 +1,13 @@
 import { TbChartGridDots, TbEdit } from "react-icons/tb";
-import { IGraphBuilder } from "./IGraphBuilderOption";
+import { IGraphBuilder } from "./IGraphBuilder";
 import { VscListTree } from "react-icons/vsc";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import { MdOutlineDataset } from "react-icons/md";
 import { BiCodeCurly } from "react-icons/bi";
 
-export const options: IGraphBuilder[] = [
+const builders: IGraphBuilder[] = [
   {
+    index: 0,
     value: "matrix",
     label: "Matrix",
     shortDescription:
@@ -21,6 +22,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]]",
   },
   {
+    index: 1,
     value: "adjacency-matrix",
     label: "Adjacency Matrix",
     shortDescription:
@@ -35,6 +37,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]]",
   },
   {
+    index: 2,
     value: "adjacency-list",
     label: "Adjacency List",
     shortDescription: "A list of nodes and the edges connected to each node",
@@ -46,6 +49,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[0, [1, 3]], [1, [0, 2]], [2, [1, 3]], [3, [0, 2]]]",
   },
   {
+    index: 3,
     value: "edge-list",
     label: "Edge List",
     shortDescription:
@@ -60,6 +64,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[0, 1], [1, 2], [2, 3], [3, 0]]",
   },
   {
+    index: 4,
     value: "incidence-matrix",
     label: "Incidence Matrix",
     shortDescription:
@@ -74,6 +79,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[0, 1, 0, 0], [1, 0, -1, 0], [0, 1, 0, -1], [0, 0, 1, 0]]",
   },
   {
+    index: 5,
     value: "adjacency-set",
     label: "Adjacency Set",
     shortDescription: "A list of nodes and the edges connected to each node",
@@ -87,6 +93,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "[[1, 2], [0, 2], [1, 3], [2]]",
   },
   {
+    index: 6,
     value: "hybrid",
     label: "Hybrid",
     shortDescription:
@@ -102,6 +109,7 @@ export const options: IGraphBuilder[] = [
     exampleValue: "",
   },
   {
+    index: 7,
     value: "custom-code",
     label: "Custom code",
     shortDescription: "Access a custom code editor to build your graph",
@@ -113,3 +121,6 @@ export const options: IGraphBuilder[] = [
     exampleValue: "fn build_graph() -> Graph { ... }",
   },
 ];
+
+
+export default builders;

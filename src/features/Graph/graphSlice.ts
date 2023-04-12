@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../../app/store";
 import { DataSet, Edge, Node, Options } from "vis-network";
+import type { RootState } from "../../app/store";
 import options from "./options";
 
 // Define a type for the slice state
 interface GraphState {
   nodes: Node[] | DataSet<Node>;
   edges: Edge[] | DataSet<Edge>;
+  builderIndex: number;
   options?: Options;
 }
 
@@ -15,6 +16,7 @@ const initialState: GraphState = {
   nodes: [],
   edges: [],
   options,
+  builderIndex: 0,
 };
 
 export const graphSlice = createSlice({
@@ -31,12 +33,19 @@ export const graphSlice = createSlice({
     setGraphOptions: (state, action) => {
       state.options = action.payload;
     },
+    setGraphBuilderIndex: (state, action) => {
+      state.builderIndex = action.payload;
+    },
     /** @ts-ignore */
-    getNodes: (state) => {
+    getGraphBuilderIndex: (state) => {
+      return state.builderIndex;
+    },
+    /** @ts-ignore */
+    getGraphNodes: (state) => {
       return state.nodes;
     },
     /** @ts-ignore */
-    getEdges: (state) => {
+    getGraphEdges: (state) => {
       return state.edges;
     },
   },
@@ -46,6 +55,7 @@ export const selectGraph = (state: RootState) => {
   return {
     nodes: state.graph.nodes,
     edges: state.graph.edges,
+    builderIndex: state.graph.builderIndex,
     options: state.graph.options,
   };
 };
@@ -54,8 +64,10 @@ export const {
   setGraphNodes,
   setGraphEdges,
   setGraphOptions,
-  getNodes,
-  getEdges,
+  setGraphBuilderIndex,
+  getGraphBuilderIndex,
+  getGraphNodes,
+  getGraphEdges,
 } = graphSlice.actions;
 
 export default graphSlice.reducer;

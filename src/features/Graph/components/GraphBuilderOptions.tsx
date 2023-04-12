@@ -1,23 +1,25 @@
 import { useEffect } from "react";
-import { options } from "./options";
-import { IGraphBuilder } from "./IGraphBuilderOption";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { useAppDispatch } from "../../../app/hooks";
+import { IGraphBuilder } from "../IGraphBuilder";
+import builders from "../builders";
+import { setGraphBuilderIndex } from "../graphSlice";
 
 
 type Props = {
   close: () => void;
-  setGraphBuilder: (graphBuilder: IGraphBuilder) => void;
+  closeAll: () => void;
 };
 
 
 const GraphBuilderOptions = (props: Props) => {
-
-
   useEffect(() => {
     const graphModal = document.getElementById("graph-modal");
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (graphModal && !graphModal.contains(e.target as Node)) props.close();
+      if (graphModal && !graphModal.contains(e.target as Node)) {
+        props.close();
+      }
     };
 
     const handleKeydown = (e: KeyboardEvent) => {
@@ -36,15 +38,19 @@ const GraphBuilderOptions = (props: Props) => {
     };
   }, []);
 
-  const GraphBuilderOption = ({ option }: { option: IGraphBuilder }) => {
+  const dispatch = useAppDispatch();
+
+  const GraphBuilderOption = ({ builder }: { builder: IGraphBuilder }) => {
     return (
       <li className="relative"
         onClick={() => {
-          props.setGraphBuilder(option);
-          props.close();
+          if (builder.notimplemented) return;
+
+          dispatch(setGraphBuilderIndex(builder.index))
+          props.closeAll();
         }}
       >
-        {option.notimplemented && (
+        {builder.notimplemented && (
           <div className="absolute top-2 right-2">
             <RiErrorWarningFill />
           </div>
@@ -53,33 +59,33 @@ const GraphBuilderOptions = (props: Props) => {
         <input
           type="checkbox"
           id="react-option"
-          value={option.label}
+          value={builder.label}
           className="hidden peer"
           required={true}
         />
         <label
-          htmlFor={option.label}
+          htmlFor={builder.label}
           className="inline-flex items-center justify-between w-full p-5 h-[200px] text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-dark-tertiary peer-checked:border-primbg-primary-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-dark-secondary dark:hover:bg-dark-tertiary
             transition duration-200 ease-in-out
             group relative
           "
           style={{
-            cursor: option.notimplemented ? "not-allowed" : "pointer",
-            filter: option.notimplemented ? "brightness(0.5)" : "none",
+            cursor: builder.notimplemented ? "not-allowed" : "pointer",
+            filter: builder.notimplemented ? "brightness(0.5)" : "none",
           }}
 
         >
           <div className="flex flex-col items-center text-center">
-            {option.icon}
+            {builder.icon}
             <div className="w-full text-lg font-semibold">
-              {option.label}
+              {builder.label}
             </div>
             <div className="w-full text-xs text-gray-500">
-              {option.shortDescription}
+              {builder.shortDescription}
             </div>
           </div>
           {
-            option.notimplemented && <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center group-hover:translate-y-0 translate-y-3 trnaistion-all duration-300 ease-in-out">
+            builder.notimplemented && <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center group-hover:translate-y-0 translate-y-3 trnaistion-all duration-300 ease-in-out">
               <div className="w-3/4 p-3 rounded-2xl bg-black flex flex-col items-center text-red-500">
                 <RiErrorWarningFill />
                 <div className="text-xs text-red-500 text-center">
@@ -115,8 +121,8 @@ const GraphBuilderOptions = (props: Props) => {
               that best fits your needs.
             </p>
             <ul className="grid w-full gap-6 my-3 md:grid-cols-3 max-h-[350px] overflow-y-auto">
-              {options.map((option, i) => (
-                <GraphBuilderOption option={option} key={i} />
+              {builders.map((builder, i) => (
+                <GraphBuilderOption builder={builder} key={i} />
               ))}
             </ul>
 

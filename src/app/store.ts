@@ -9,6 +9,10 @@ const store = configureStore({
     quickActions: quickActionsSlice,
     graph: graphSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

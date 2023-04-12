@@ -1,4 +1,5 @@
 export interface IGraphBuilder {
+  index: number;
   value: string;
   label: string;
   shortDescription: string;
