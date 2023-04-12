@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import consoleSlice from "../features/Console/consoleSlice";
+import quickActionsSlice from "../features/QuickActions/quickActionsSlice";
 
 const store = configureStore({
   reducer: {
     console: consoleSlice,
+    quickActions: quickActionsSlice,
   },
 });
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
-import { GrDirections } from "react-icons/gr";
 import {
   TbArrowBounce,
   TbArrowMoveRight,

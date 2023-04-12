@@ -4,7 +4,7 @@ import { DataSet } from "vis-data";
 import { Options } from "vis-network";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import Graph from "./components/Graph";
+import Graph from "./features/Graph";
 import GraphBuilderOptions from "./components/GraphBuiler/GraphBuilderOptions";
 import { options as graphBuilderOptions } from "./components/GraphBuiler/options";
 import Loading from "./components/Loading";
@@ -12,13 +12,13 @@ import facts from "./data/facts.json";
 import Console from "./features/Console";
 import { closeConsole, toggleOpenConsole } from "./features/Console/consoleSlice";
 import QuickActions from "./features/QuickActions";
+import { closeQuickActions, toggleOpenQuickActions } from "./features/QuickActions/quickActionsSlice";
 
 
 
 
 
 function App() {
-  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
   const [options, setOptions] = useState<Options>({
@@ -94,8 +94,8 @@ function App() {
   const [openedModal, setOpenedModal] = useState<string | null>(null);
   const [graphBuilder, setGraphBuilder] = useState(graphBuilderOptions[0]);
 
-  const isConsoleOpened = useAppSelector((state) => state.console.opened);
   const dispatch = useAppDispatch();
+  const quickActionOpened = useAppSelector(state => state.quickActions.opened);
 
 
   // useEffect(() => {
@@ -115,10 +115,10 @@ function App() {
       // console.log(e.key);
 
       if (e.metaKey || e.ctrlKey) {
-        if (e.key == "k") setQuickSearchOpen((state) => !state);
+        if (e.key == "k") dispatch(toggleOpenQuickActions());
         if (e.key == "i") dispatch(toggleOpenConsole());
       } else if (e.key == "Escape") {
-        setQuickSearchOpen(false);
+        dispatch(closeQuickActions());
         dispatch(closeConsole());
       } else if (e.key == "Enter") {
       }
@@ -150,9 +150,9 @@ function App() {
       "
     >
       <Graph edges={edges} nodes={nodes} options={options} />
-      {quickSearchOpen && (
+      {quickActionOpened && (
         <QuickActions
-          close={() => setQuickSearchOpen(false)}
+          close={() => dispatch(closeQuickActions())}
           options={options}
           setOptions={setOptions}
           setOpenedModal={setOpenedModal}
@@ -166,7 +166,7 @@ function App() {
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex items-center justify-end">
           <div
-            onClick={() => setQuickSearchOpen(true)}
+            onClick={() => dispatch(toggleOpenQuickActions())}
             className="cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary"
           >
             <BsSearch />
