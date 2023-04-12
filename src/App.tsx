@@ -3,14 +3,15 @@ import { BsSearch } from "react-icons/bs";
 import { DataSet } from "vis-data";
 import { Options } from "vis-network";
 import "./App.css";
-import Console from "./components/Console";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import Graph from "./components/Graph";
-import graphOptions from "./components/Graph/graphOptions";
 import GraphBuilderOptions from "./components/GraphBuiler/GraphBuilderOptions";
 import { options as graphBuilderOptions } from "./components/GraphBuiler/options";
 import Loading from "./components/Loading";
-import QuickActions from "./components/QuickActions";
 import facts from "./data/facts.json";
+import Console from "./features/Console";
+import { closeConsole, toggleOpenConsole } from "./features/Console/consoleSlice";
+import QuickActions from "./features/QuickActions";
 
 
 
@@ -18,7 +19,6 @@ import facts from "./data/facts.json";
 
 function App() {
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
-  const [consoleOpen, setConsoleOpen] = useState(false);
   const [loadingPct, setLoadingPct] = useState(999);
   const [currentFact, setCurrentFact] = useState(0);
   const [options, setOptions] = useState<Options>({
@@ -94,6 +94,9 @@ function App() {
   const [openedModal, setOpenedModal] = useState<string | null>(null);
   const [graphBuilder, setGraphBuilder] = useState(graphBuilderOptions[0]);
 
+  const isConsoleOpened = useAppSelector((state) => state.console.opened);
+  const dispatch = useAppDispatch();
+
 
   // useEffect(() => {
   //   // increase the loading percentage by a random amount to emulate a loading bar
@@ -113,10 +116,10 @@ function App() {
 
       if (e.metaKey || e.ctrlKey) {
         if (e.key == "k") setQuickSearchOpen((state) => !state);
-        if (e.key == "i") setConsoleOpen((state) => !state);
+        if (e.key == "i") dispatch(toggleOpenConsole());
       } else if (e.key == "Escape") {
         setQuickSearchOpen(false);
-        setConsoleOpen(false);
+        dispatch(closeConsole());
       } else if (e.key == "Enter") {
       }
     }
@@ -170,8 +173,6 @@ function App() {
           </div>
         </div>
         <Console
-          open={consoleOpen}
-          setOpen={setConsoleOpen}
           setNodes={setNodes}
           setEdges={setEdges}
           graphBuilder={graphBuilder}

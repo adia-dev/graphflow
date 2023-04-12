@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { BiChevronDown, BiInfoCircle } from "react-icons/bi";
+import { BiChevronDown } from "react-icons/bi";
 import {
   BsFillInfoCircleFill,
   BsLayoutSidebarInsetReverse,
@@ -12,12 +12,12 @@ import {
   MdErrorOutline,
   MdFormatAlignLeft,
 } from "react-icons/md";
-import { IGraphBuilder } from "../GraphBuiler/IGraphBuilderOption";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { IGraphBuilder } from "../../components/GraphBuiler/IGraphBuilderOption";
+import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
 import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
 
 type Props = {
-  open: boolean;
-  setOpen: (state: boolean) => void;
   setNodes: (nodes: any) => void;
   setEdges: (edges: any) => void;
   graphBuilder: IGraphBuilder
@@ -36,10 +36,13 @@ const Console = (props: Props) => {
   const [showExamples, setShowExamples] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const isOpened = useAppSelector((state) => state.console.opened);
+  const dispatch = useAppDispatch();
+
 
   useEffect(() => {
     if (ref.current) {
-      props.open && ref.current.focus();
+      isOpened && ref.current.focus();
     }
 
     // handle the Shift key to show examples
@@ -57,7 +60,7 @@ const Console = (props: Props) => {
     };
 
     const handleKeyup = (e: KeyboardEvent) => {
-      if (!props.open) return;
+      if (!isOpened) return;
 
       if (e.key === "Shift") {
         setShowExamples(false);
@@ -143,6 +146,18 @@ const Console = (props: Props) => {
     ref.current.innerHTML = formatMatrix(input);
   }
 
+  function openTheConsole() {
+    dispatch(openConsole());
+  }
+
+  function closeTheConsole() {
+    dispatch(closeConsole());
+  }
+
+  function toggleOpen() {
+    dispatch(toggleOpenConsole());
+  }
+
   return (
     <div
       className="w-full
@@ -156,12 +171,12 @@ const Console = (props: Props) => {
         flex flex-col
       "
       style={{
-        height: `${props.open ? "250px" : "50px"}`,
+        height: `${isOpened ? "250px" : "50px"}`,
       }}
     >
       <div className="w-full">
         <div
-          onClick={() => props.setOpen(!props.open)}
+          onClick={() => toggleOpen()}
           className="text-gray-500 hover:bg-primary-500 hover:text-white transition-all duration-500 ease-in-out w-full h-2 bg-gray-300 dark:bg-dark-tertiary cursor-row-resize flex items-center justify-center"
         >
           <BsThreeDots />
@@ -170,8 +185,8 @@ const Console = (props: Props) => {
           <h3 className="">Console</h3>
           <div className="flex items-center space-x-3">
             <BiChevronDown
-              onClick={() => props.setOpen(!props.open)}
-              className={`${!props.open && "rotate-180"} transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
+              onClick={() => toggleOpen()}
+              className={`${!isOpened && "rotate-180"} transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
             />
             <BsLayoutSidebarInsetReverse />
           </div>
@@ -246,7 +261,7 @@ const Console = (props: Props) => {
         <div className="w-full flex-1 flex items-end justify-between">
           <button
             type="button"
-            onClick={() => props.setOpen(false)}
+            onClick={() => closeTheConsole()}
             className="dark:bg-dark-secondary hover:bg-dark-tertiary px-3 py-2 rounded-lg border dark:border-dark-tertiary"
           >
             Close
