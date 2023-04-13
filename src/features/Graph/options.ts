@@ -29,22 +29,22 @@ const options: Options = {
     //   bindToWindow: true,
     // },
   },
-  // layout: {
-  //   randomSeed: 1,
-  //   improvedLayout: true,
-  //   hierarchical: {
-  //     enabled: true,
-  //     levelSeparation: 100,
-  //     nodeSpacing: 300,
-  //     treeSpacing: 100,
-  //     blockShifting: false,
-  //     edgeMinimization: false,
-  //     parentCentralization: true,
-  //     direction: "LR", // UD, DU, LR, RL
-  //     sortMethod: "directed", // hubsize, directed
-  //     shakeTowards: "roots", // roots, leaves
-  //   },
-  // },
+  layout: {
+    randomSeed: 1,
+    improvedLayout: true,
+    hierarchical: {
+      enabled: true,
+      levelSeparation: 150,
+      nodeSpacing: 100,
+      treeSpacing: 200,
+      blockShifting: true,
+      edgeMinimization: true,
+      parentCentralization: true,
+      direction: "UD", // UD, DU, LR, RL
+      sortMethod: "directed", // hubsize, directed,
+      shakeTowards: "roots", // roots, leaves
+    },
+  },
   physics: {
     enabled: true,
     barnesHut: {
@@ -69,4 +69,19 @@ const options: Options = {
   },
 };
 
+const matrixOptions: Options = {
+  ...options,
+  layout: {
+    randomSeed: 1,
+    improvedLayout: true,
+    hierarchical: {
+      enabled: false,
+    },
+  },
+  physics: {
+    enabled: false,
+  },
+};
+
 export default options;
+export { matrixOptions };

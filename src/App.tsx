@@ -17,31 +17,16 @@ import {
 } from "./features/QuickActions/quickActionsSlice";
 
 function App() {
-  const [loadingPct, setLoadingPct] = useState(999);
-  const [currentFact, setCurrentFact] = useState(0);
+
 
   const dispatch = useAppDispatch();
   const quickActionOpened = useAppSelector(
     (state) => state.quickActions.opened
   );
 
-  //? This is for the loading screen
-  // useEffect(() => {
-  //   // increase the loading percentage by a random amount to emulate a loading bar
-  //   const interval = setInterval(() => {
-  //     setLoadingPct((pct) => Math.min(pct + Math.random() * 75, 101));
-  //     setCurrentFact((fact) => (fact + 1) % facts.length);
-  //   }, 2000);
-
-  //   if (loadingPct >= 100) clearInterval(interval);
-
-  //   return () => clearInterval(interval);
-  // }, [loadingPct]);
-
   useEffect(() => {
-    function handleShortcut(e: KeyboardEvent) {
-      // console.log(e.key);
 
+    function handleShortcut(e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey) {
         if (e.key == "k") dispatch(toggleOpenQuickActions());
         if (e.key == "i") dispatch(toggleOpenConsole());
@@ -59,15 +44,6 @@ function App() {
     };
   }, []);
 
-  if (loadingPct <= 100) {
-    return (
-      <Loading
-        loadingPct={loadingPct}
-        quote={facts[currentFact]}
-        nextQuote={() => setCurrentFact((fact) => (fact + 1) % facts.length)}
-      />
-    );
-  }
 
   return (
     <div

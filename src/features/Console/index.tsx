@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import builders from "../Graph/builders";
 import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
-import { formatMatrix, generateFromAdjacencyList, generateFromMatrix } from "./generators";
+import { formatMatrix, generateFromEdgeList, generateFromMatrix } from "./generators";
 
 type Props = {
 };
@@ -39,8 +39,6 @@ const Console = (props: Props) => {
   const builderIndex = useAppSelector((state) => state.graph.builderIndex);
   const dispatch = useAppDispatch();
 
-
-
   useEffect(() => {
     if (ref.current) {
       isOpened && ref.current.focus();
@@ -52,6 +50,7 @@ const Console = (props: Props) => {
         setShowExamples(true);
         if (e.key === "Enter") {
           if (ref.current) {
+            e.preventDefault();
             ref.current.innerText = builders[builderIndex].exampleValue;
             formatInput();
             generate();
@@ -76,7 +75,7 @@ const Console = (props: Props) => {
       window.removeEventListener("keyup", handleKeyup);
       setShowExamples(false);
     };
-  }, []);
+  }, [builderIndex]);
 
   function onInput() {
     if (!liveInput) {
@@ -97,7 +96,6 @@ const Console = (props: Props) => {
 
     let datasets = null;
 
-    console.log(builders[builderIndex].value, builderIndex);
     switch (builders[builderIndex].value) {
       case "matrix":
         datasets = generateFromMatrix(ref.current.innerText);
@@ -117,8 +115,8 @@ const Console = (props: Props) => {
           setValid(false);
         }
         break;
-      case "adjacency-list":
-        datasets = generateFromAdjacencyList(ref.current.innerText);
+      case "edge-list":
+        datasets = generateFromEdgeList(ref.current.innerText);
         if (datasets) {
           dispatch(setGraphNodes(datasets.nodes));
           dispatch(setGraphEdges(datasets.edges));

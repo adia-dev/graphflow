@@ -8,7 +8,7 @@ import {
   TbCircuitChangeover,
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import GraphBuilderOptions from "../Graph/components/GraphBuilderOptions";
 import { setGraphOptions } from "../Graph/graphSlice";
 
@@ -25,8 +25,10 @@ type SearchItem = {
 };
 
 const QuickActions = (props: Props) => {
-  const dispatch = useAppDispatch()
-  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] = useState(false);
+  const dispatch = useAppDispatch();
+  const options = useAppSelector((state) => state.graph.options);
+  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] =
+    useState(false);
 
   const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
   const searchItems: SearchItem[] = [
@@ -69,16 +71,11 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "P"],
       callback: () => {
-        dispatch(setGraphOptions((options: any) => {
-          return {
-            ...options,
-            physics: {
-              ...options.physics,
-              enabled: !options.physics.enabled,
-            },
-          };
-        }));
-
+        const updatedOptions = {
+          ...options,
+          physics: { ...options.physics, enabled: !options.physics.enabled },
+        };
+        dispatch(setGraphOptions(updatedOptions));
         props.close();
       },
     },
@@ -88,28 +85,23 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "D"],
       callback: () => {
-        dispatch(setGraphOptions((options: any) => {
-          return {
-            ...options,
-            edges: {
-              ...options.edges,
-              arrows: {
-                to: {
-                  ...options.edges.arrows.to,
-                  arrows: {
-                    to: {
-                      ...options.edges.arrows.to,
-                      enabled: !options.edges.arrows.to.enabled,
-                    },
-                  },
-                },
+        // FIXME: This is a hacky way to do this
+        const updatedOptions = {
+          ...options,
+          edges: {
+            ...options.edges,
+            arrows: {
+              ...options.edges.arrows,
+              to: {
+                ...options.edges.arrows.to,
+                enabled: !options.edges.arrows.to.enabled,
               },
             },
-          };
-        }));
+          },
+        };
+        dispatch(setGraphOptions(updatedOptions));
 
         props.close();
-
       },
     },
   ];
@@ -212,19 +204,17 @@ const QuickActions = (props: Props) => {
 
           "
         >
-          {
-            graphBuilderOptionsOpened && (
-              <GraphBuilderOptions
-                close={() => {
-                  setGraphBuilderOptionsOpened(false)
-                }}
-                closeAll={() => {
-                  setGraphBuilderOptionsOpened(false)
-                  props.close()
-                }}
-              />
-            )
-          }
+          {graphBuilderOptionsOpened && (
+            <GraphBuilderOptions
+              close={() => {
+                setGraphBuilderOptionsOpened(false);
+              }}
+              closeAll={() => {
+                setGraphBuilderOptionsOpened(false);
+                props.close();
+              }}
+            />
+          )}
           <form className="" onSubmit={onSubmit}>
             <div className="flex items-center relative">
               <BiSearch className="absolute left-5" />

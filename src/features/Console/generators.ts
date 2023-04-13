@@ -23,7 +23,7 @@ function validateInput(input: string | undefined, regex: RegExp): boolean {
   return false;
 }
 
-function generateFromAdjacencyList(input: string): {
+function generateFromEdgeList(input: string): {
   nodes: DataSet<Node>;
   edges: DataSet<Edge>;
   formattedInput?: string;
@@ -31,15 +31,15 @@ function generateFromAdjacencyList(input: string): {
   if (input && validateInput(input, RE_MATRIX)) {
     const formattedInput = formatMatrix(input);
     let matrix: number[][] = JSON.parse(formattedInput);
-    let adjacencyList = new Map<number, number[]>();
+    let edgeList = new Map<number, number[]>();
     const nodeSet = new Set<number>();
     for (const [from, to] of matrix) {
       nodeSet.add(from);
       nodeSet.add(to);
-      if (adjacencyList.has(from)) {
-        adjacencyList.get(from)!.push(to);
+      if (edgeList.has(from)) {
+        edgeList.get(from)!.push(to);
       } else {
-        adjacencyList.set(from, [to]);
+        edgeList.set(from, [to]);
       }
     }
 
@@ -51,7 +51,7 @@ function generateFromAdjacencyList(input: string): {
       };
     });
 
-    const edges = Array.from(adjacencyList.entries())
+    const edges = Array.from(edgeList.entries())
       .map(([node, neighbors]) => {
         return neighbors.map((neighbor: number) => {
           return {
@@ -152,4 +152,4 @@ function generateFromMatrix(input: string): {
   }
 }
 
-export { generateFromAdjacencyList, generateFromMatrix, formatMatrix };
+export { generateFromEdgeList, generateFromMatrix, formatMatrix };

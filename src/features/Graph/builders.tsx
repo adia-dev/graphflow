@@ -2,7 +2,7 @@ import { TbChartGridDots, TbEdit } from "react-icons/tb";
 import { IGraphBuilder } from "./IGraphBuilder";
 import { VscListTree } from "react-icons/vsc";
 import { TfiLayoutGrid4Alt } from "react-icons/tfi";
-import { MdOutlineDataset } from "react-icons/md";
+import { MdDataArray, MdOutlineDataset } from "react-icons/md";
 import { BiCodeCurly } from "react-icons/bi";
 
 const builders: IGraphBuilder[] = [
@@ -23,6 +23,21 @@ const builders: IGraphBuilder[] = [
   },
   {
     index: 1,
+    value: "edge-list",
+    label: "Edge List",
+    shortDescription:
+      "A list of edges used to build the graph, each edge is a pair of nodes",
+    tooltip: "A list of edges",
+    icon: <MdDataArray className="w-10 h-10 text-gray-500" />,
+    notimplemented: false,
+    description:
+      "A list of edges used to build the graph, each edge is a pair of nodes, the third value is optional and represents the weight of the edge",
+    example:
+      "[[0, 1], [1, 2], [2, 3], [3, 0]], with weights: [[0, 1, 1], [1, 2, 2], [2, 3, 3], [3, 0, 4]]",
+    exampleValue: "[[0, 1], [1, 2], [2, 3], [3, 0]]",
+  },
+  {
+    index: 2,
     value: "adjacency-matrix",
     label: "Adjacency Matrix",
     shortDescription:
@@ -37,32 +52,19 @@ const builders: IGraphBuilder[] = [
     exampleValue: "[[0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]]",
   },
   {
-    index: 2,
+    index: 3,
     value: "adjacency-list",
     label: "Adjacency List",
     shortDescription: "A list of nodes and the edges connected to each node",
     tooltip: "A list of nodes and the edges connected to each node",
     icon: <VscListTree className="w-10 h-10 text-gray-500" />,
+    notimplemented: true,
     description:
       "A list of nodes and the edges connected to each node, each node is a list of edges, each edge is a pair of nodes, the third value is optional and represents the weight of the edge",
     example: "[[0, [1, 3]], [1, [0, 2]], [2, [1, 3]], [3, [0, 2]]]",
     exampleValue: "[[0, [1, 3]], [1, [0, 2]], [2, [1, 3]], [3, [0, 2]]]",
   },
-  {
-    index: 3,
-    value: "edge-list",
-    label: "Edge List",
-    shortDescription:
-      "A list of edges used to build the graph, each edge is a pair of nodes",
-    tooltip: "A list of edges",
-    icon: <TfiLayoutGrid4Alt className="w-10 h-10 text-gray-500" />,
-    notimplemented: true,
-    description:
-      "A list of edges used to build the graph, each edge is a pair of nodes, the third value is optional and represents the weight of the edge",
-    example:
-      "[[0, 1], [1, 2], [2, 3], [3, 0]], with weights: [[0, 1, 1], [1, 2, 2], [2, 3, 3], [3, 0, 4]]",
-    exampleValue: "[[0, 1], [1, 2], [2, 3], [3, 0]]",
-  },
+
   {
     index: 4,
     value: "incidence-matrix",

@@ -13,6 +13,9 @@ const Graph = (props: Props) => {
   const { nodes, edges, options } = useAppSelector(selectGraph);
 
   useEffect(() => {
+
+    const clonedOptions = structuredClone(options);
+
     const network =
       ref.current &&
       new Network(
@@ -21,7 +24,7 @@ const Graph = (props: Props) => {
           nodes: nodes,
           edges: edges,
         },
-        options
+        clonedOptions
       );
 
     if (network) {
