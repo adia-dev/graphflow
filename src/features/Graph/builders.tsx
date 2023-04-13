@@ -1,9 +1,8 @@
-import { TbChartGridDots, TbEdit } from "react-icons/tb";
-import { IGraphBuilder } from "./IGraphBuilder";
-import { VscListTree } from "react-icons/vsc";
-import { TfiLayoutGrid4Alt } from "react-icons/tfi";
-import { MdDataArray, MdOutlineDataset } from "react-icons/md";
 import { BiCodeCurly } from "react-icons/bi";
+import { MdDataArray, MdOutlineDataset } from "react-icons/md";
+import { TbChartGridDots, TbEdit } from "react-icons/tb";
+import { VscListTree } from "react-icons/vsc";
+import { IGraphBuilder } from "./IGraphBuilder";
 
 const builders: IGraphBuilder[] = [
   {

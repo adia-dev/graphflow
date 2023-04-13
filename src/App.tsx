@@ -51,6 +51,7 @@ function App() {
       bg-gray-50 dark:bg-dark-primary
       block 
       galaxy-background
+      relative
       "
     >
       <Graph />

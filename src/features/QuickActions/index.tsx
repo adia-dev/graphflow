@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BiSearch } from "react-icons/bi";
+import { BiRightArrowAlt, BiSearch } from "react-icons/bi";
 import {
   TbArrowBounce,
   TbArrowMoveRight,
@@ -10,16 +10,18 @@ import {
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import GraphBuilderOptions from "../Graph/components/GraphBuilderOptions";
-import { setGraphOptions } from "../Graph/graphSlice";
+import { setGraphBuilderIndex, setGraphOptions } from "../Graph/graphSlice";
+import { IoSettingsSharp } from "react-icons/io5";
 
 type Props = {
   close: () => void;
 };
 
-type SearchItem = {
+type Action = {
   name: string;
   category: string;
   icon?: JSX.Element;
+  goTo?: string;
   shortcut?: string[];
   callback?: () => void | Promise<void>;
 };
@@ -27,11 +29,10 @@ type SearchItem = {
 const QuickActions = (props: Props) => {
   const dispatch = useAppDispatch();
   const options = useAppSelector((state) => state.graph.options);
-  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] =
-    useState(false);
+  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] = useState(false);
+  const [filteredCategory, setFilteredCategory] = useState<string>("all");
 
-  const filters: string[] = ["Graphs", "Trees", "Algorithms", "Commands"];
-  const searchItems: SearchItem[] = [
+  const actions: Action[] = [
     {
       name: "New Tree",
       icon: <TbBinaryTree />,
@@ -42,7 +43,8 @@ const QuickActions = (props: Props) => {
       name: "New Graph",
       icon: <TbCircuitChangeover />,
       category: "graphs",
-      shortcut: ["⌘", "⌃", "N"],
+      // shortcut: ["⌘", "⌃", "N"],
+      goTo: "Graph Builder",
       callback: () => {
         setGraphBuilderOptionsOpened(true);
       },
@@ -104,23 +106,41 @@ const QuickActions = (props: Props) => {
         props.close();
       },
     },
+    {
+      name: "Preferences",
+      icon: <IoSettingsSharp />,
+      category: "settings",
+      shortcut: ["⌘", ","],
+      callback: () => {
+      },
+    },
+    // builders
+    {
+      name: "Matrix Builder",
+      icon: <TfiLayoutGrid4 />,
+      category: "builders",
+      shortcut: ["⌘", "⌃", "M"],
+      callback() {
+        // dispatch(setGraphBuilderID("matrix"));
+      },
+    },
   ];
 
-  const [filteredSearchItems, setFilteredSearchItems] =
-    useState<SearchItem[]>(searchItems);
-
+  // unique filters of actions categories
+  const filters: Set<string> = new Set(actions.map((item) => item.category));
+  const [filteredActions, setFilteredActions] = useState<Action[]>(actions);
   const [selectedItem, setSelectedItem] = useState(0);
 
-  async function searchQuickAction(e: React.FormEvent<HTMLInputElement>) {
+  async function searchAction(e: React.FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
 
     if (!value || value == "") {
-      setFilteredSearchItems(searchItems);
+      setFilteredActions(actions);
       return;
     }
 
-    setFilteredSearchItems(
-      filteredSearchItems.filter((item) =>
+    setFilteredActions(
+      filteredActions.filter((item) =>
         item.name.toLowerCase().startsWith(value.toLowerCase())
       )
     );
@@ -137,10 +157,10 @@ const QuickActions = (props: Props) => {
   }
 
   useEffect(() => {
-    const quickSearch = document.getElementById("quick-search");
+    const quickAction = document.getElementById("quick-actions");
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (quickSearch && !quickSearch.contains(e.target as Node)) {
+      if (quickAction && !quickAction.contains(e.target as Node)) {
         props.close();
       }
     };
@@ -150,27 +170,27 @@ const QuickActions = (props: Props) => {
 
       if (e.key === "Enter") {
         console.log(selectedItem);
-        console.log(filteredSearchItems.length);
-        if (selectedItem < 0 || selectedItem >= filteredSearchItems.length)
+        console.log(filteredActions.length);
+        if (selectedItem < 0 || selectedItem >= filteredActions.length)
           return;
 
         console.log("Pressed enter");
 
-        console.log(filteredSearchItems[selectedItem]);
+        console.log(filteredActions[selectedItem]);
 
-        filteredSearchItems[selectedItem].callback?.();
+        filteredActions[selectedItem].callback?.();
       }
     };
 
     const handleKeyup = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         if (selectedItem - 1 < 0)
-          setSelectedItem((_item) => filteredSearchItems.length - 1);
+          setSelectedItem((_item) => filteredActions.length - 1);
         else setSelectedItem((item) => item - 1);
       }
 
       if (e.key === "ArrowUp") {
-        if (selectedItem >= filteredSearchItems.length)
+        if (selectedItem >= filteredActions.length)
           setSelectedItem((_item) => 0);
         else setSelectedItem((item) => item + 1);
         console.log(selectedItem);
@@ -194,9 +214,9 @@ const QuickActions = (props: Props) => {
     <div className="w-scren h-screen absolute z-10 inset-0 text-gray-600 dark:text-gray-500 ">
       <div className="w-full h-full flex items-center justify-center bg-dark-primary bg-opacity-60 backdrop-blur-sm transition-all duration-300 ease-in-out">
         <div
-          id="quick-search"
+          id="quick-actions"
           className="w-[750px] h-[400px] bg-gray-300 border border-gray-400
-          dark:bg-[#121212] dark:border-dark-secondary
+          dark:bg-[#00000055] dark:border-dark-secondary
           rounded-3xl
           overflow-hidden
           text-lg
@@ -221,28 +241,49 @@ const QuickActions = (props: Props) => {
               <input
                 type="text"
                 name="query"
-                onChange={searchQuickAction}
+                onChange={searchAction}
                 placeholder="Search or type a command..."
                 className="w-full p-4 bg-transparent pl-12 border-none outline-none focus:border-transparent focus:outline-none focus:ring-0"
                 autoFocus
               />
             </div>
           </form>
-          <ul className="px-5 text-xs flex items-center space-x-3">
-            {filters.map((filter, i) => (
+          <ul className="px-5 text-xs flex items-center space-x-3 py-2">
+            <li
+              onClick={() => {
+                setFilteredActions(actions);
+                setFilteredCategory("all");
+              }}
+              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == "all" && "dark:bg-secondary-500 text-gray-300  dark:hover:bg-secondary-600"} transition-all duration-300 ease-in-out`}
+            >
+              All
+            </li>
+            {Array.from(filters.values()).map((filter, i) => (
               <li
                 key={i}
-                className="cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary"
+                onClick={() => {
+
+                  if (filteredCategory == filter) {
+                    setFilteredActions(actions);
+                    setFilteredCategory("all");
+                  } else {
+                    setFilteredActions(
+                      actions.filter((item) => item.category === filter)
+                    );
+                    setFilteredCategory(filter);
+                  }
+                }}
+                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == filter && "dark:bg-primary-500 text-gray-300  dark:hover:bg-primary-600"} transition-all duration-300 ease-in-out`}
               >
                 {filter}
               </li>
             ))}
           </ul>
-          <div className="p-3">
-            {filteredSearchItems.map((item, i) => (
+          <div className="p-3 max-h-[80%] overflow-y-scroll rounded-3xl">
+            {filteredActions.map((item, i) => (
               <div
                 key={i}
-                className={`cursor-pointer ${selectedItem === i && "bg-dark-secondary"
+                className={`mt-1 cursor-pointer group ${selectedItem === i && "bg-dark-secondary"
                   } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback()}
               >
@@ -265,6 +306,16 @@ const QuickActions = (props: Props) => {
                     ))}
                   </ul>
                 )}
+                {
+                  item.goTo && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-gray-600 uppercase">
+                        OPEN: {item.goTo}
+                      </span>
+                      <BiRightArrowAlt className="text-xl h-full group-hover:bg-black p-1 rounded-md" />
+                    </div>
+                  )
+                }
               </div>
             ))}
           </div>
