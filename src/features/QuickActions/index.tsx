@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiRightArrowAlt, BiSearch } from "react-icons/bi";
+import { GiPathDistance } from "react-icons/gi";
+import { IoSettingsSharp } from "react-icons/io5";
 import {
   TbArrowBounce,
   TbArrowMoveRight,
@@ -10,8 +12,7 @@ import {
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import GraphBuilderOptions from "../Graph/components/GraphBuilderOptions";
-import { setGraphBuilderIndex, setGraphOptions } from "../Graph/graphSlice";
-import { IoSettingsSharp } from "react-icons/io5";
+import { setGraphOptions } from "../Graph/graphSlice";
 
 type Props = {
   close: () => void;
@@ -24,6 +25,7 @@ type Action = {
   goTo?: string;
   shortcut?: string[];
   callback?: () => void | Promise<void>;
+
 };
 
 const QuickActions = (props: Props) => {
@@ -124,10 +126,34 @@ const QuickActions = (props: Props) => {
         // dispatch(setGraphBuilderID("matrix"));
       },
     },
-  ];
+    {
+      name: "Depth First Search",
+      icon: <GiPathDistance />,
+      category: "algorithms",
+      callback() {
+        // dispatch(setGraphBuilderID("matrix"));
+      },
+    },
+    {
+      name: "Breadth First Search",
+      icon: <GiPathDistance />,
+      category: "algorithms",
+      callback() {
+        // dispatch(setGraphBuilderID("matrix"));
+      },
+    },
+    {
+      name: "Trie",
+      icon: <TbBinaryTree2 />,
+      category: "trees",
+      callback() {
+        // dispatch(setGraphBuilderID("matrix"));
+      },
+    }
+  ].sort((lhs, rhs) => lhs.category.localeCompare(rhs.category));
 
   // unique filters of actions categories
-  const filters: Set<string> = new Set(actions.map((item) => item.category));
+  const filters: Set<string> = new Set(actions.map((item) => item.category).sort((lhs, rhs) => lhs.localeCompare(rhs)));
   const [filteredActions, setFilteredActions] = useState<Action[]>(actions);
   const [selectedItem, setSelectedItem] = useState(0);
 

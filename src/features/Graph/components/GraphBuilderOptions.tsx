@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../../app/hooks";
 import { IGraphBuilder } from "../IGraphBuilder";
 import builders from "../builders";
 import { setGraphBuilderIndex } from "../graphSlice";
+import { openConsole } from "../../Console/consoleSlice";
 
 
 type Props = {
@@ -47,6 +48,7 @@ const GraphBuilderOptions = (props: Props) => {
           if (builder.notimplemented) return;
 
           dispatch(setGraphBuilderIndex(builder.index))
+          dispatch(openConsole())
           props.closeAll();
         }}
       >
