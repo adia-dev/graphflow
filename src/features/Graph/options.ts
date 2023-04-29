@@ -33,7 +33,7 @@ const options: Options = {
     randomSeed: 1,
     improvedLayout: true,
     hierarchical: {
-      enabled: true,
+      enabled: false,
       levelSeparation: 150,
       nodeSpacing: 100,
       treeSpacing: 200,
