@@ -13,9 +13,8 @@ import {
   closeQuickActions,
   toggleOpenQuickActions,
 } from "./features/QuickActions/quickActionsSlice";
-import Welcome from "./components/Welcome";
 import Tour from "./features/Tour";
-import { openTour } from "./features/Tour/tourSlice";
+import { closeTour, openTour } from "./features/Tour/tourSlice";
 
 
 
@@ -26,6 +25,8 @@ function App() {
   const quickActionOpened = useAppSelector(
     (state) => state.quickActions.opened
   );
+  const consoleOpened = useAppSelector((state) => state.console.opened);
+  const tourOpened = useAppSelector((state) => state.tour.opened);
 
   useEffect(() => {
 
@@ -35,8 +36,15 @@ function App() {
         if (e.key == "i") dispatch(toggleOpenConsole());
       } else if (e.key == "Escape") {
         dispatch(closeQuickActions());
+        dispatch(closeTour());
         dispatch(closeConsole());
+
       } else if (e.key == "Enter") {
+      }
+
+      // question mark => open tour
+      if (e.key == "?") {
+        dispatch(openTour());
       }
     }
 
