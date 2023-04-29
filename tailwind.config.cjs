@@ -31,6 +31,7 @@ module.exports = {
         "dark-primary": "#161819",
         "dark-secondary": "#1F2125",
         "dark-tertiary": "#2C2F36",
+        "dark-quaternary": "#3B3F4B",
         "background-popup": "#1F2125B0",
       },
     },

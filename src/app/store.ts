@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import consoleSlice from "../features/Console/consoleSlice";
 import quickActionsSlice from "../features/QuickActions/quickActionsSlice";
 import graphSlice from "../features/Graph/graphSlice";
+import tourSlice from "../features/Tour/tourSlice";
 
 const store = configureStore({
   reducer: {
     console: consoleSlice,
     quickActions: quickActionsSlice,
     graph: graphSlice,
+    tour: tourSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

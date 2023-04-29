@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
+import { useEffect } from "react";
+import { BsQuestion, BsSearch } from "react-icons/bs";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import Loading from "./components/Loading";
-import facts from "./data/facts.json";
 import Console from "./features/Console";
 import {
   closeConsole,
@@ -15,6 +13,11 @@ import {
   closeQuickActions,
   toggleOpenQuickActions,
 } from "./features/QuickActions/quickActionsSlice";
+import Welcome from "./components/Welcome";
+import Tour from "./features/Tour";
+import { openTour } from "./features/Tour/tourSlice";
+
+
 
 function App() {
 
@@ -54,6 +57,7 @@ function App() {
       relative
       "
     >
+      <Tour />
       <Graph />
       {quickActionOpened && (
         <QuickActions
@@ -61,12 +65,18 @@ function App() {
         />
       )}
       <div className="absolute bottom-0 w-full">
-        <div className="w-full flex items-center justify-end">
+        <div className="w-full flex flex-col items-end justify-center space-y-2 my-2">
           <div
             onClick={() => dispatch(toggleOpenQuickActions())}
             className="cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary"
           >
             <BsSearch />
+          </div>
+          <div
+            onClick={() => dispatch(openTour())}
+            className="cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary"
+          >
+            <BsQuestion className="text-xl" />
           </div>
         </div>
         <Console />
