@@ -16,10 +16,13 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import builders from "../Graph/builders";
 import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
-import { formatMatrix, generateFromEdgeList, generateFromMatrix } from "./generators";
+import {
+  formatMatrix,
+  generateFromEdgeList,
+  generateFromMatrix,
+} from "./generators";
 
-type Props = {
-};
+type Props = {};
 
 type History = {
   input: string;
@@ -84,14 +87,12 @@ const Console = (props: Props) => {
       return;
     }
 
-
     if (!ref.current) return;
 
     generate();
   }
 
   function generate() {
-
     if (!ref.current) return;
 
     let datasets = null;
@@ -110,7 +111,6 @@ const Console = (props: Props) => {
               timestamp: Date.now(),
             });
           }
-
         } else {
           setValid(false);
         }
@@ -185,7 +185,9 @@ const Console = (props: Props) => {
           <div className="flex items-center space-x-3">
             <BiChevronDown
               onClick={() => toggleOpen()}
-              className={`${!isOpened && "rotate-180"} transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
+              className={`${
+                !isOpened && "rotate-180"
+              } transition-all duration-500 ease-in-out delay-100 cursor-pointer`}
             />
             <BsLayoutSidebarInsetReverse />
           </div>
@@ -193,9 +195,7 @@ const Console = (props: Props) => {
       </div>
       <div className="w-full flex-1 p-5 flex flex-col">
         <div className="flex items-center space-x-2 dark:text-gray-400 text-xs">
-          <span>
-            {builders[builderIndex].label} =
-          </span>
+          <span>{builders[builderIndex].label} =</span>
           <div className="relative group cursor-help">
             <BsFillInfoCircleFill />
             {/* group hover popup with the information of the graphBuilder */}
@@ -206,17 +206,13 @@ const Console = (props: Props) => {
                 </h3>
                 <BsFillInfoCircleFill />
               </div>
-              <p className="text-sm">
-                {builders[builderIndex].description}
-              </p>
+              <p className="text-sm">{builders[builderIndex].description}</p>
               <p className="text-xs text-gray-500 mt-2">
                 (Press Shift to see the examples and Enter to use it as input)
               </p>
               {showExamples && (
                 <div className="mt-2">
-                  <h4 className="text-sm font-semibold">
-                    Examples
-                  </h4>
+                  <h4 className="text-sm font-semibold">Examples</h4>
                   <div className="flex flex-col space-y-2 white">
                     {builders[builderIndex].example}
                   </div>
@@ -227,11 +223,12 @@ const Console = (props: Props) => {
         </div>
         <div className="w-full relative mt-2">
           <div
-            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto bg-gray-200 focus:ring-0 focus:outline-none outline-none dark:bg-dark-tertiary border border-gray-300 ${valid !== null &&
+            className={`w-full rounded-md p-2 max-h-[75px] overflow-y-auto bg-gray-200 focus:ring-0 focus:outline-none outline-none dark:bg-dark-tertiary border border-gray-300 ${
+              valid !== null &&
               (valid
                 ? "text-green-500 border-green-500 bg-green-500 bg-opacity-10"
                 : "text-red-500 border-red-500 bg-red-500 bg-opacity-10")
-              }`}
+            }`}
             ref={ref}
             onInput={onInput}
             contentEditable={true}
@@ -285,7 +282,7 @@ const Console = (props: Props) => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

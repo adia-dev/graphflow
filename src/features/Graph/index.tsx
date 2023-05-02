@@ -4,16 +4,13 @@ import { useAppSelector } from "../../app/hooks";
 import { selectGraph } from "./graphSlice";
 export * from "./options";
 
-type Props = {
-
-};
+type Props = {};
 
 const Graph = (props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const { nodes, edges, options } = useAppSelector(selectGraph);
 
   useEffect(() => {
-
     const clonedOptions = structuredClone(options);
 
     const network =

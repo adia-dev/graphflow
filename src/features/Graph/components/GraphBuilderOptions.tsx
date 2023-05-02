@@ -6,12 +6,10 @@ import builders from "../builders";
 import { setGraphBuilderIndex } from "../graphSlice";
 import { openConsole } from "../../Console/consoleSlice";
 
-
 type Props = {
   close: () => void;
   closeAll: () => void;
 };
-
 
 const GraphBuilderOptions = (props: Props) => {
   useEffect(() => {
@@ -26,7 +24,6 @@ const GraphBuilderOptions = (props: Props) => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === "Escape") props.close();
     };
-
 
     window.addEventListener("keydown", handleKeydown);
 
@@ -43,12 +40,13 @@ const GraphBuilderOptions = (props: Props) => {
 
   const GraphBuilderOption = ({ builder }: { builder: IGraphBuilder }) => {
     return (
-      <li className="relative"
+      <li
+        className="relative"
         onClick={() => {
           if (builder.notimplemented) return;
 
-          dispatch(setGraphBuilderIndex(builder.index))
-          dispatch(openConsole())
+          dispatch(setGraphBuilderIndex(builder.index));
+          dispatch(openConsole());
           props.closeAll();
         }}
       >
@@ -56,8 +54,7 @@ const GraphBuilderOptions = (props: Props) => {
           <div className="absolute top-2 right-2">
             <RiErrorWarningFill />
           </div>
-        )
-        }
+        )}
         <input
           type="checkbox"
           id="react-option"
@@ -75,19 +72,16 @@ const GraphBuilderOptions = (props: Props) => {
             cursor: builder.notimplemented ? "not-allowed" : "pointer",
             filter: builder.notimplemented ? "brightness(0.5)" : "none",
           }}
-
         >
           <div className="flex flex-col items-center text-center">
             {builder.icon}
-            <div className="w-full text-lg font-semibold">
-              {builder.label}
-            </div>
+            <div className="w-full text-lg font-semibold">{builder.label}</div>
             <div className="w-full text-xs text-gray-500">
               {builder.shortDescription}
             </div>
           </div>
-          {
-            builder.notimplemented && <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center group-hover:translate-y-0 translate-y-3 trnaistion-all duration-300 ease-in-out">
+          {builder.notimplemented && (
+            <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex items-center justify-center group-hover:translate-y-0 translate-y-3 trnaistion-all duration-300 ease-in-out">
               <div className="w-3/4 p-3 rounded-2xl bg-black flex flex-col items-center text-red-500">
                 <RiErrorWarningFill />
                 <div className="text-xs text-red-500 text-center">
@@ -95,11 +89,11 @@ const GraphBuilderOptions = (props: Props) => {
                 </div>
               </div>
             </div>
-          }
+          )}
         </label>
       </li>
-    )
-  }
+    );
+  };
 
   return (
     <div className="w-scren h-screen absolute z-20 inset-0 text-gray-600 dark:text-gray-500 ">
@@ -132,7 +126,7 @@ const GraphBuilderOptions = (props: Props) => {
               <button
                 className="px-4 py-2 text-sm font-medium text-gray-900 transition-colors duration-200 transform bg-white rounded-md dark:bg-dark-secondary dark:text-white hover:bg-gray-200 dark:hover:bg-dark-tertiary focus:outline-none focus:bg-gray-200 dark:focus:bg-dark-tertiary"
                 onClick={() => {
-                  props.close()
+                  props.close();
                 }}
               >
                 Cancel
@@ -140,7 +134,7 @@ const GraphBuilderOptions = (props: Props) => {
               <button
                 className="px-4 py-2 ml-3 text-sm font-medium text-white transition-colors duration-200 transform bg-primary-600 rounded-md hover:bg-primary-500 focus:outline-none focus:bg-primary-500"
                 onClick={() => {
-                  props.close()
+                  props.close();
                 }}
               >
                 Next

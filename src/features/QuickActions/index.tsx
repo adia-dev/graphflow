@@ -25,13 +25,13 @@ type Action = {
   goTo?: string;
   shortcut?: string[];
   callback?: () => void | Promise<void>;
-
 };
 
 const QuickActions = (props: Props) => {
   const dispatch = useAppDispatch();
   const options = useAppSelector((state) => state.graph.options);
-  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] = useState(false);
+  const [graphBuilderOptionsOpened, setGraphBuilderOptionsOpened] =
+    useState(false);
   const [filteredCategory, setFilteredCategory] = useState<string>("all");
 
   const actions: Action[] = [
@@ -113,8 +113,7 @@ const QuickActions = (props: Props) => {
       icon: <IoSettingsSharp />,
       category: "settings",
       shortcut: ["⌘", ","],
-      callback: () => {
-      },
+      callback: () => {},
     },
     // builders
     {
@@ -149,11 +148,15 @@ const QuickActions = (props: Props) => {
       callback() {
         // dispatch(setGraphBuilderID("matrix"));
       },
-    }
+    },
   ].sort((lhs, rhs) => lhs.category.localeCompare(rhs.category));
 
   // unique filters of actions categories
-  const filters: Set<string> = new Set(actions.map((item) => item.category).sort((lhs, rhs) => lhs.localeCompare(rhs)));
+  const filters: Set<string> = new Set(
+    actions
+      .map((item) => item.category)
+      .sort((lhs, rhs) => lhs.localeCompare(rhs))
+  );
   const [filteredActions, setFilteredActions] = useState<Action[]>(actions);
   const [selectedItem, setSelectedItem] = useState(0);
 
@@ -197,8 +200,7 @@ const QuickActions = (props: Props) => {
       if (e.key === "Enter") {
         console.log(selectedItem);
         console.log(filteredActions.length);
-        if (selectedItem < 0 || selectedItem >= filteredActions.length)
-          return;
+        if (selectedItem < 0 || selectedItem >= filteredActions.length) return;
 
         console.log("Pressed enter");
 
@@ -280,7 +282,10 @@ const QuickActions = (props: Props) => {
                 setFilteredActions(actions);
                 setFilteredCategory("all");
               }}
-              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == "all" && "dark:bg-secondary-500 text-gray-300  dark:hover:bg-secondary-600"} transition-all duration-300 ease-in-out`}
+              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
+                filteredCategory == "all" &&
+                "dark:bg-secondary-500 text-gray-300  dark:hover:bg-secondary-600"
+              } transition-all duration-300 ease-in-out`}
             >
               All
             </li>
@@ -288,7 +293,6 @@ const QuickActions = (props: Props) => {
               <li
                 key={i}
                 onClick={() => {
-
                   if (filteredCategory == filter) {
                     setFilteredActions(actions);
                     setFilteredCategory("all");
@@ -299,7 +303,10 @@ const QuickActions = (props: Props) => {
                     setFilteredCategory(filter);
                   }
                 }}
-                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == filter && "dark:bg-primary-500 text-gray-300  dark:hover:bg-primary-600"} transition-all duration-300 ease-in-out`}
+                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
+                  filteredCategory == filter &&
+                  "dark:bg-primary-500 text-gray-300  dark:hover:bg-primary-600"
+                } transition-all duration-300 ease-in-out`}
               >
                 {filter}
               </li>
@@ -309,8 +316,9 @@ const QuickActions = (props: Props) => {
             {filteredActions.map((item, i) => (
               <div
                 key={i}
-                className={`mt-1 cursor-pointer group ${selectedItem === i && "bg-dark-secondary"
-                  } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
+                className={`mt-1 cursor-pointer group ${
+                  selectedItem === i && "bg-dark-secondary"
+                } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback()}
               >
                 <div className="flex items-center space-x-2">
@@ -332,16 +340,14 @@ const QuickActions = (props: Props) => {
                     ))}
                   </ul>
                 )}
-                {
-                  item.goTo && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs text-gray-600 uppercase">
-                        OPEN: {item.goTo}
-                      </span>
-                      <BiRightArrowAlt className="text-xl h-full group-hover:bg-black p-1 rounded-md" />
-                    </div>
-                  )
-                }
+                {item.goTo && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs text-gray-600 uppercase">
+                      OPEN: {item.goTo}
+                    </span>
+                    <BiRightArrowAlt className="text-xl h-full group-hover:bg-black p-1 rounded-md" />
+                  </div>
+                )}
               </div>
             ))}
           </div>

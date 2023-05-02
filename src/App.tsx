@@ -16,11 +16,7 @@ import {
 import Tour from "./features/Tour";
 import { closeTour, openTour } from "./features/Tour/tourSlice";
 
-
-
 function App() {
-
-
   const dispatch = useAppDispatch();
   const quickActionOpened = useAppSelector(
     (state) => state.quickActions.opened
@@ -29,7 +25,6 @@ function App() {
   const tourOpened = useAppSelector((state) => state.tour.opened);
 
   useEffect(() => {
-
     function handleShortcut(e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey) {
         if (e.key == "k") dispatch(toggleOpenQuickActions());
@@ -38,7 +33,6 @@ function App() {
         dispatch(closeQuickActions());
         dispatch(closeTour());
         dispatch(closeConsole());
-
       } else if (e.key == "Enter") {
       }
 
@@ -55,7 +49,6 @@ function App() {
     };
   }, []);
 
-
   return (
     <div
       className="w-screen h-screen overflow-hidden
@@ -68,9 +61,7 @@ function App() {
       <Tour />
       <Graph />
       {quickActionOpened && (
-        <QuickActions
-          close={() => dispatch(closeQuickActions())}
-        />
+        <QuickActions close={() => dispatch(closeQuickActions())} />
       )}
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex flex-col items-end justify-center space-y-2 my-2">

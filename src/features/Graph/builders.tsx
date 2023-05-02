@@ -123,5 +123,4 @@ const builders: IGraphBuilder[] = [
   },
 ];
 
-
 export default builders;
