@@ -31,7 +31,7 @@ const options: Options = {
   },
   layout: {
     randomSeed: 1,
-    improvedLayout: true,
+    improvedLayout: false,
     hierarchical: {
       enabled: false,
       levelSeparation: 150,

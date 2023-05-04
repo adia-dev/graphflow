@@ -25,7 +25,19 @@ const Graph = (props: Props) => {
       );
 
     if (network) {
-      var radius = 150;
+      // settimeout 2000
+      setTimeout(() => {
+        network.fit(
+          {
+            minZoomLevel: 0.1,
+            maxZoomLevel: 0.75,
+            animation: {
+              duration: 5000,
+              easingFunction: "easeOutQuint",
+            },
+          }
+        );
+      }, 1000);
     }
   }, [ref, nodes, edges, options]);
 

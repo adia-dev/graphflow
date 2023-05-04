@@ -21,8 +21,6 @@ function App() {
   const quickActionOpened = useAppSelector(
     (state) => state.quickActions.opened
   );
-  const consoleOpened = useAppSelector((state) => state.console.opened);
-  const tourOpened = useAppSelector((state) => state.tour.opened);
 
   useEffect(() => {
     function handleShortcut(e: KeyboardEvent) {
