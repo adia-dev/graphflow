@@ -104,7 +104,6 @@ function generateFromMatrix(input: string): {
             y: i * 100,
             label: val ? val.toString() : "-",
             color: val ? "#6366f1" : "#ffffff25",
-            title: "test",
           };
         })
       )

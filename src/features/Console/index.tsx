@@ -14,8 +14,8 @@ import {
 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import builders from "../Graph/builders";
-import { selectGraph, setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
-import { closeConsole, openConsole, toggleOpenConsole } from "./consoleSlice";
+import { setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
+import { closeConsole, toggleOpenConsole } from "./consoleSlice";
 import {
   formatMatrix,
   generateFromEdgeList,
@@ -30,15 +30,14 @@ type History = {
   timestamp: number;
 };
 
-const Console = (props: Props) => {
+const Console = (_props: Props) => {
   const [valid, setValid] = useState<boolean | null>(null);
   const [liveInput, setLiveInput] = useState(true);
-  const [history, setHistory] = useState(new Map<string, History>());
+  const [history] = useState(new Map<string, History>());
   const [showExamples, setShowExamples] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const isOpened = useAppSelector((state) => state.console.opened);
-  const { nodes, edges } = useAppSelector(selectGraph);
   const builderIndex = useAppSelector((state) => state.graph.builderIndex);
   const dispatch = useAppDispatch();
 
@@ -143,10 +142,6 @@ const Console = (props: Props) => {
 
     const input = ref.current.innerText;
     ref.current.innerHTML = formatMatrix(input);
-  }
-
-  function openTheConsole() {
-    dispatch(openConsole());
   }
 
   function closeTheConsole() {
