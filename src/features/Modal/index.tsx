@@ -74,70 +74,74 @@ const Modal = (props: Props) => {
               <div className="">{props.components[index]}</div>
             )}
         </div>
-        <hr
-          className="w-full my-4
-                    dark:border-dark-tertiary
-                "
-        />
-        <div className="w-full flex items-center justify-between">
-          {props.components && index > 0 ? (
-            <div className="min-w-[60px]">
-              <button
-                className="border text-gray-800
-              dark:text-white dark:border-dark-tertiary
-              hover:bg-gray-100 dark:hover:bg-dark-tertiary
-              px-4 py-2 rounded-lg"
-                onClick={() => {
-                  setIndex(Math.max(index - 1, 0));
-                }}
-              >
-                Previous
-              </button>
+        {props.components && props.components.length > 0 && (
+          <div>
+            <hr
+              className="w-full my-4
+            dark:border-dark-tertiary
+            "
+            />
+            <div className="w-full flex items-center justify-between">
+              {props.components && index > 0 ? (
+                <div className="min-w-[60px]">
+                  <button
+                    className="border text-gray-800
+                  dark:text-white dark:border-dark-tertiary
+                  hover:bg-gray-100 dark:hover:bg-dark-tertiary
+                  px-4 py-2 rounded-lg"
+                    onClick={() => {
+                      setIndex(Math.max(index - 1, 0));
+                    }}
+                  >
+                    Previous
+                  </button>
+                </div>
+              ) : (
+                <div className="min-w-[95px] py-[21px]"></div>
+              )}
+              <div className="flex-1 flex items-center justify-center">
+                {props.components &&
+                  props.components?.length > 1 &&
+                  props.components.map((_component, index) => (
+                    <div
+                      className="w-2 h-2 bg-gray-300 
+                    dark:bg-dark-tertiary
+                    hover:bg-gray-400
+                    cursor-pointer
+                    hover:scale-105
+                    transition duration-300 ease-in-out
+                    rounded-full mx-1"
+                      key={index}
+                    ></div>
+                  ))}
+              </div>
+              {props.components && index < props.components.length - 1 && (
+                <button
+                  onClick={() => {
+                    setIndex(index + 1);
+                  }}
+                  className="bg-primary-500 
+                hover:bg-primary-600
+                text-white px-4 py-2 rounded-lg"
+                >
+                  Next
+                </button>
+              )}
+              {props.components && index === props.components.length - 1 && (
+                <button
+                  onClick={() => {
+                    onClose();
+                  }}
+                  className="bg-primary-500 
+                hover:bg-primary-600
+                text-white px-4 py-2 rounded-lg"
+                >
+                  Finish
+                </button>
+              )}
             </div>
-          ) : (
-            <div className="min-w-[95px] py-[21px]"></div>
-          )}
-          <div className="flex-1 flex items-center justify-center">
-            {props.components &&
-              props.components?.length > 1 &&
-              props.components.map((_component, index) => (
-                <div
-                  className="w-2 h-2 bg-gray-300 
-                                dark:bg-dark-tertiary
-                                hover:bg-gray-400
-                                cursor-pointer
-                                hover:scale-105
-                                transition duration-300 ease-in-out
-                                rounded-full mx-1"
-                  key={index}
-                ></div>
-              ))}
           </div>
-          {props.components && index < props.components.length - 1 && (
-            <button
-              onClick={() => {
-                setIndex(index + 1);
-              }}
-              className="bg-primary-500 
-            hover:bg-primary-600
-            text-white px-4 py-2 rounded-lg"
-            >
-              Next
-            </button>
-          )}
-          {props.components && index === props.components.length - 1 && (
-            <button
-              onClick={() => {
-                onClose();
-              }}
-              className="bg-primary-500 
-            hover:bg-primary-600
-            text-white px-4 py-2 rounded-lg"
-            >
-              Finish
-            </button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );

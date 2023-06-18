@@ -8,6 +8,7 @@ import {
   toggleOpenConsole,
 } from "./features/Console/consoleSlice";
 import Graph from "./features/Graph";
+import Help from "./features/Help";
 import QuickActions from "./features/QuickActions";
 import {
   closeQuickActions,
@@ -57,6 +58,7 @@ function App() {
       "
     >
       <Tour />
+      <Help />
       <Graph />
       {quickActionOpened && (
         <QuickActions close={() => dispatch(closeQuickActions())} />
