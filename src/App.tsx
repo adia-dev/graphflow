@@ -9,6 +9,7 @@ import {
 } from "./features/Console/consoleSlice";
 import Graph from "./features/Graph";
 import Help from "./features/Help";
+import { closeHelp, openHelp, toggleOpenHelp } from "./features/Help/helpSlice";
 import QuickActions from "./features/QuickActions";
 import {
   closeQuickActions,
@@ -31,13 +32,14 @@ function App() {
       } else if (e.key == "Escape") {
         dispatch(closeQuickActions());
         dispatch(closeTour());
+        dispatch(closeHelp());
         dispatch(closeConsole());
       } else if (e.key == "Enter") {
       }
 
       // question mark => open tour
       if (e.key == "?") {
-        dispatch(openTour());
+        dispatch(openHelp());
       }
     }
 
@@ -72,7 +74,7 @@ function App() {
             <BsSearch />
           </div>
           <div
-            onClick={() => dispatch(openTour())}
+            onClick={() => dispatch(openHelp())}
             className="cursor-pointer w-14 aspect-square flex items-center text-xs uppercase justify-center text-gray-200 rounded-full bg-dark-primary border border-dark-secondary"
           >
             <BsQuestion className="text-xl" />

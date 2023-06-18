@@ -3,6 +3,7 @@ import consoleSlice from "../features/Console/consoleSlice";
 import quickActionsSlice from "../features/QuickActions/quickActionsSlice";
 import graphSlice from "../features/Graph/graphSlice";
 import tourSlice from "../features/Tour/tourSlice";
+import helpSlice from "../features/Help/helpSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     quickActions: quickActionsSlice,
     graph: graphSlice,
     tour: tourSlice,
+    help: helpSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

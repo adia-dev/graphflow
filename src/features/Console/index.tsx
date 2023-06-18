@@ -192,7 +192,9 @@ const Console = (_props: Props) => {
         <div className="flex items-center space-x-2 dark:text-gray-400 text-xs">
           <span>{builders[builderIndex].label} =</span>
           <div className="relative group cursor-help">
-            <BsFillInfoCircleFill />
+            <div className="animate-pulse">
+              <BsFillInfoCircleFill />
+            </div>
             {/* group hover popup with the information of the graphBuilder */}
             <div className="absolute bottom-full z-50 left-0 w-64 bg-white dark:bg-dark-tertiary dark:text-gray-200 rounded-md shadow-md p-3 pointer-events-none group-hover:pointer-events-auto opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
               <div className="flex items-center justify-between">

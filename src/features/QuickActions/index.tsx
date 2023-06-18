@@ -89,17 +89,14 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "D"],
       callback: () => {
-        // FIXME: This is a hacky way to do this
+        if (!options.edges || !options.edges.arrows || typeof options.edges.arrows === "string" || !options.edges.arrows.to) return;
         const updatedOptions = {
           ...options,
           edges: {
             ...options.edges,
             arrows: {
               ...options.edges.arrows,
-              to: {
-                ...options.edges.arrows.to,
-                enabled: !options.edges.arrows.to.enabled,
-              },
+              to: typeof options.edges.arrows.to === "boolean" ? !options.edges.arrows.to : !options.edges.arrows.to.enabled
             },
           },
         };
@@ -113,7 +110,7 @@ const QuickActions = (props: Props) => {
       icon: <IoSettingsSharp />,
       category: "settings",
       shortcut: ["⌘", ","],
-      callback: () => {},
+      callback: () => { },
     },
     // builders
     {
@@ -282,10 +279,9 @@ const QuickActions = (props: Props) => {
                 setFilteredActions(actions);
                 setFilteredCategory("all");
               }}
-              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
-                filteredCategory == "all" &&
+              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == "all" &&
                 "dark:bg-secondary-500 text-gray-300  dark:hover:bg-secondary-600"
-              } transition-all duration-300 ease-in-out`}
+                } transition-all duration-300 ease-in-out`}
             >
               All
             </li>
@@ -303,10 +299,9 @@ const QuickActions = (props: Props) => {
                     setFilteredCategory(filter);
                   }
                 }}
-                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
-                  filteredCategory == filter &&
+                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == filter &&
                   "dark:bg-primary-500 text-gray-300  dark:hover:bg-primary-600"
-                } transition-all duration-300 ease-in-out`}
+                  } transition-all duration-300 ease-in-out`}
               >
                 {filter}
               </li>
@@ -316,9 +311,8 @@ const QuickActions = (props: Props) => {
             {filteredActions.map((item, i) => (
               <div
                 key={i}
-                className={`mt-1 cursor-pointer group ${
-                  selectedItem === i && "bg-dark-secondary"
-                } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
+                className={`mt-1 cursor-pointer group ${selectedItem === i && "bg-dark-secondary"
+                  } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback()}
               >
                 <div className="flex items-center space-x-2">

@@ -7,6 +7,9 @@ import { MdOutlineContactSupport } from "react-icons/md";
 import { TbBinaryTree } from "react-icons/tb";
 import Modal from "../Modal";
 
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { closeHelp } from "./helpSlice";
+
 type Props = {};
 type Topic = {
   icon?: JSX.Element;
@@ -22,7 +25,9 @@ type GettingStartedStep = {
 };
 
 const Help = (_props: Props) => {
-  const [opened, setOpened] = useState(true);
+  const opened = useAppSelector((state) => state.help.opened);
+  const dispatch = useAppDispatch();
+
   const popularTopics: Topic[] = [
     {
       icon: <TbBinaryTree className="text-4xl" />,
@@ -104,7 +109,7 @@ const Help = (_props: Props) => {
   }
 
   return (
-    <Modal opened={opened} onClose={() => setOpened(false)}>
+    <Modal opened={opened} onClose={() => dispatch(closeHelp())}>
       <div className="">
         <h2 className="text-2xl">Help</h2>
         <form className="mt-3" onSubmit={onSearchForHelp}>

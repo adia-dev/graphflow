@@ -73,6 +73,7 @@ const Demo = (props: Props) => {
       network.on("click", (params) => {
         if (params.nodes.length === 1) {
           const nodeId = params.nodes[0];
+          /// @ts-ignore
           const node = nodes.find((n) => n.id === nodeId);
           if (node) {
             const newNodes = nodes.map((n) => {
@@ -93,8 +94,10 @@ const Demo = (props: Props) => {
       network.on("doubleClick", (params) => {
         if (params.nodes.length === 1) {
           const nodeId = params.nodes[0];
+          /// @ts-ignore
           const node = nodes.find((n) => n.id === nodeId);
           if (node) {
+            /// @ts-ignore
             setNodes(nodes.filter((n) => n.id !== node.id));
             setDeletedNodes([...deletedNodes, node]);
           }
@@ -154,6 +157,7 @@ const Demo = (props: Props) => {
           <div
             onClick={() => {
               if (deletedNodes.length === 0) return;
+              /// @ts-ignore
               setNodes([...nodes, deletedNodes[deletedNodes.length - 1]]);
               setDeletedNodes(deletedNodes.slice(0, deletedNodes.length - 1));
             }}

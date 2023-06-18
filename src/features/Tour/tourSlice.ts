@@ -34,7 +34,4 @@ export const tourSlice = createSlice({
 
 export const { openTour, closeTour, toggleOpenTour } = tourSlice.actions;
 
-export const selectQuickActionsOpen = (state: RootState) =>
-  state.quickActions.opened;
-
 export default tourSlice.reducer;
