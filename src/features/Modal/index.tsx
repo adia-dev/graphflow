@@ -102,7 +102,7 @@ const Modal = (props: Props) => {
               <div className="flex-1 flex items-center justify-center">
                 {props.components &&
                   props.components?.length > 1 &&
-                  props.components.map((_component, index) => (
+                  props.components.map((_component, i) => (
                     <div
                       className="w-2 h-2 bg-gray-300 
                     dark:bg-dark-tertiary
@@ -111,7 +111,10 @@ const Modal = (props: Props) => {
                     hover:scale-105
                     transition duration-300 ease-in-out
                     rounded-full mx-1"
-                      key={index}
+                      key={i}
+                      style={{
+                        backgroundColor: i > index ? "gray" : "#6366f1",
+                      }}
                     ></div>
                   ))}
               </div>
