@@ -307,7 +307,7 @@ const QuickActions = (props: Props) => {
               </li>
             ))}
           </ul>
-          <div className="p-3 max-h-[80%] overflow-y-scroll rounded-3xl">
+          <div className="p-3 max-h-[80%] overflow-y-scroll rounded-3xl no-scrollbar">
             {filteredActions.map((item, i) => (
               <div
                 key={i}
