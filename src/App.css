@@ -5,6 +5,7 @@
 
 .grid-background {
   background-color: #fff;
+  background-size: 15px 15px;
   background-image: url("./assets/grid.svg");
 }
 

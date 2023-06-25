@@ -15,6 +15,8 @@ import {
   closeQuickActions,
   toggleOpenQuickActions,
 } from "./features/QuickActions/quickActionsSlice";
+import QuickStart from "./features/QuickStart";
+import { closeQuickStart } from "./features/QuickStart/quickStartSlice";
 import Tour from "./features/Tour";
 import { closeTour, openTour } from "./features/Tour/tourSlice";
 
@@ -23,6 +25,8 @@ function App() {
   const quickActionOpened = useAppSelector(
     (state) => state.quickActions.opened
   );
+
+  const quickStartOpened = useAppSelector((state) => state.quickStart.opened);
 
   useEffect(() => {
     function handleShortcut(e: KeyboardEvent) {
@@ -34,6 +38,7 @@ function App() {
         dispatch(closeTour());
         dispatch(closeHelp());
         dispatch(closeConsole());
+        dispatch(closeQuickStart());
       } else if (e.key == "Enter") {
       }
 
@@ -62,6 +67,7 @@ function App() {
       <Tour />
       <Help />
       <Graph />
+      {quickStartOpened && <QuickStart />}
       {quickActionOpened && (
         <QuickActions close={() => dispatch(closeQuickActions())} />
       )}

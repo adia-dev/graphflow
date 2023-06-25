@@ -4,11 +4,13 @@ import quickActionsSlice from "../features/QuickActions/quickActionsSlice";
 import graphSlice from "../features/Graph/graphSlice";
 import tourSlice from "../features/Tour/tourSlice";
 import helpSlice from "../features/Help/helpSlice";
+import quickStartSlice from "../features/QuickStart/quickStartSlice";
 
 const store = configureStore({
   reducer: {
     console: consoleSlice,
     quickActions: quickActionsSlice,
+    quickStart: quickStartSlice,
     graph: graphSlice,
     tour: tourSlice,
     help: helpSlice,
