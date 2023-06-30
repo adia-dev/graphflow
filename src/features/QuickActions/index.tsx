@@ -89,14 +89,23 @@ const QuickActions = (props: Props) => {
       category: "config",
       shortcut: ["⌘", "⌃", "D"],
       callback: () => {
-        if (!options.edges || !options.edges.arrows || typeof options.edges.arrows === "string" || !options.edges.arrows.to) return;
+        if (
+          !options.edges ||
+          !options.edges.arrows ||
+          typeof options.edges.arrows === "string" ||
+          !options.edges.arrows.to
+        )
+          return;
         const updatedOptions = {
           ...options,
           edges: {
             ...options.edges,
             arrows: {
               ...options.edges.arrows,
-              to: typeof options.edges.arrows.to === "boolean" ? !options.edges.arrows.to : !options.edges.arrows.to.enabled
+              to:
+                typeof options.edges.arrows.to === "boolean"
+                  ? !options.edges.arrows.to
+                  : !options.edges.arrows.to.enabled,
             },
           },
         };
@@ -110,7 +119,7 @@ const QuickActions = (props: Props) => {
       icon: <IoSettingsSharp />,
       category: "settings",
       shortcut: ["⌘", ","],
-      callback: () => { },
+      callback: () => {},
     },
     // builders
     {
@@ -148,6 +157,17 @@ const QuickActions = (props: Props) => {
     },
   ].sort((lhs, rhs) => lhs.category.localeCompare(rhs.category));
 
+  const categories = new Map([
+    ["trees", { color: "#FFC107AA" }],
+    ["graphs", { color: "#3F51B5AA" }],
+    ["matrices", { color: "#4CAF50AA" }],
+    ["config", { color: "#F44336AA" }],
+    ["settings", { color: "#9E9E9EAA" }],
+    ["builders", { color: "#9C27B0AA" }],
+    ["algorithms", { color: "#2196F3AA" }],
+    ["default", { color: "#9E9E9EAA" }],
+  ]);
+
   // unique filters of actions categories
   const filters: Set<string> = new Set(
     actions
@@ -155,7 +175,7 @@ const QuickActions = (props: Props) => {
       .sort((lhs, rhs) => lhs.localeCompare(rhs))
   );
   const [filteredActions, setFilteredActions] = useState<Action[]>(actions);
-  const [selectedItem, setSelectedItem] = useState(0);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   async function searchAction(e: React.FormEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
@@ -171,7 +191,7 @@ const QuickActions = (props: Props) => {
       )
     );
 
-    setSelectedItem(0);
+    setSelectedItemIndex(0);
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -195,30 +215,34 @@ const QuickActions = (props: Props) => {
       if (e.key === "Escape") props.close();
 
       if (e.key === "Enter") {
-        console.log(selectedItem);
+        console.log(selectedItemIndex);
         console.log(filteredActions.length);
-        if (selectedItem < 0 || selectedItem >= filteredActions.length) return;
+        if (
+          selectedItemIndex < 0 ||
+          selectedItemIndex >= filteredActions.length
+        )
+          return;
 
         console.log("Pressed enter");
 
-        console.log(filteredActions[selectedItem]);
+        console.log(filteredActions[selectedItemIndex]);
 
-        filteredActions[selectedItem].callback?.();
+        filteredActions[selectedItemIndex].callback?.();
       }
     };
 
     const handleKeyup = (e: KeyboardEvent) => {
       if (e.key === "ArrowDown") {
-        if (selectedItem - 1 < 0)
-          setSelectedItem((_item) => filteredActions.length - 1);
-        else setSelectedItem((item) => item - 1);
+        if (selectedItemIndex - 1 < 0)
+          setSelectedItemIndex((_item) => filteredActions.length - 1);
+        else setSelectedItemIndex((item) => item - 1);
       }
 
       if (e.key === "ArrowUp") {
-        if (selectedItem >= filteredActions.length)
-          setSelectedItem((_item) => 0);
-        else setSelectedItem((item) => item + 1);
-        console.log(selectedItem);
+        if (selectedItemIndex >= filteredActions.length)
+          setSelectedItemIndex((_item) => 0);
+        else setSelectedItemIndex((item) => item + 1);
+        console.log(selectedItemIndex);
       }
     };
 
@@ -240,13 +264,16 @@ const QuickActions = (props: Props) => {
       <div className="w-full h-full flex items-center justify-center bg-dark-primary bg-opacity-60 backdrop-blur-sm transition-all duration-300 ease-in-out">
         <div
           id="quick-actions"
+          style={{
+            boxShadow: `0 0 9999px 10px ${
+              categories.get(
+                filteredActions[selectedItemIndex]?.category || "default"
+              )?.color
+            }`,
+          }}
           className="w-[750px] h-[400px] bg-gray-300 border border-gray-400
-          dark:bg-[#00000055] dark:border-dark-secondary
-          rounded-3xl
-          overflow-hidden
-          text-lg
-          shadow-xl
-
+          dark:bg-[#000000cc] dark:border-dark-secondary rounded-3xl overflow-hidden text-lg shadow-xl
+          transition-all duration-300 ease-in-out
           "
         >
           {graphBuilderOptionsOpened && (
@@ -262,13 +289,33 @@ const QuickActions = (props: Props) => {
           )}
           <form className="" onSubmit={onSubmit}>
             <div className="flex items-center relative">
-              <BiSearch className="absolute left-5" />
+              <div className="flex items-center space-x-2 absolute left-5">
+                <BiSearch className="" />
+                {filteredCategory !== "all" && (
+                  <div
+                    className="py-2 px-3 rounded-full text-white text-xs uppercase mr-2"
+                    style={{
+                      backgroundColor: categories.get(
+                        filteredActions[selectedItemIndex].category
+                      )?.color,
+                    }}
+                  >
+                    {filteredActions[selectedItemIndex].category}
+                  </div>
+                )}
+              </div>
               <input
                 type="text"
                 name="query"
                 onChange={searchAction}
                 placeholder="Search or type a command..."
                 className="w-full p-4 bg-transparent pl-12 border-none outline-none focus:border-transparent focus:outline-none focus:ring-0"
+                style={{
+                  caretColor: categories.get(
+                    filteredActions[selectedItemIndex]?.category || "default"
+                  )?.color,
+                  paddingLeft: filteredCategory !== "all" ? "10rem" : "3rem",
+                }}
                 autoFocus
               />
             </div>
@@ -279,9 +326,10 @@ const QuickActions = (props: Props) => {
                 setFilteredActions(actions);
                 setFilteredCategory("all");
               }}
-              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == "all" &&
+              className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
+                filteredCategory == "all" &&
                 "dark:bg-secondary-500 text-gray-300  dark:hover:bg-secondary-600"
-                } transition-all duration-300 ease-in-out`}
+              } transition-all duration-300 ease-in-out`}
             >
               All
             </li>
@@ -299,9 +347,16 @@ const QuickActions = (props: Props) => {
                     setFilteredCategory(filter);
                   }
                 }}
-                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${filteredCategory == filter &&
+                className={`cursor-pointer uppercase dark:bg-dark-secondary px-2 py-1 rounded dark:hover:bg-dark-tertiary ${
+                  filteredCategory == filter &&
                   "dark:bg-primary-500 text-gray-300  dark:hover:bg-primary-600"
-                  } transition-all duration-300 ease-in-out`}
+                } transition-all duration-300 ease-in-out`}
+                style={{
+                  backgroundColor:
+                    filteredCategory == filter
+                      ? categories.get(filter)?.color
+                      : "",
+                }}
               >
                 {filter}
               </li>
@@ -311,8 +366,9 @@ const QuickActions = (props: Props) => {
             {filteredActions.map((item, i) => (
               <div
                 key={i}
-                className={`mt-1 cursor-pointer group ${selectedItem === i && "bg-dark-secondary"
-                  } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
+                className={`mt-1 cursor-pointer group ${
+                  selectedItemIndex === i && "bg-dark-secondary"
+                } hover:bg-dark-secondary rounded-xl p-2 hover:text-gray-400 flex items-center justify-between`}
                 onClick={() => item.callback && item.callback()}
               >
                 <div className="flex items-center space-x-2">

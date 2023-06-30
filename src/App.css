@@ -9,12 +9,6 @@
   background-image: url("./assets/grid.svg");
 }
 
-#quick-actions {
-  /* box-shadow: 0 0 50px 15px #48abe0; */
-  /* light box shadow like the search in Arc Browser */
-  box-shadow: 0 0 9999px 10px #48abe011;
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

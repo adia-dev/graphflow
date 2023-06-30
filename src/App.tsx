@@ -9,7 +9,7 @@ import {
 } from "./features/Console/consoleSlice";
 import Graph from "./features/Graph";
 import Help from "./features/Help";
-import { closeHelp, openHelp, toggleOpenHelp } from "./features/Help/helpSlice";
+import { closeHelp, openHelp } from "./features/Help/helpSlice";
 import QuickActions from "./features/QuickActions";
 import {
   closeQuickActions,
@@ -18,7 +18,7 @@ import {
 import QuickStart from "./features/QuickStart";
 import { closeQuickStart } from "./features/QuickStart/quickStartSlice";
 import Tour from "./features/Tour";
-import { closeTour, openTour } from "./features/Tour/tourSlice";
+import { closeTour } from "./features/Tour/tourSlice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -64,13 +64,13 @@ function App() {
       relative
       "
     >
-      <Tour />
-      <Help />
-      <Graph />
       {quickStartOpened && <QuickStart />}
       {quickActionOpened && (
         <QuickActions close={() => dispatch(closeQuickActions())} />
       )}
+      <Tour />
+      <Help />
+      <Graph />
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex flex-col items-end justify-center space-y-2 my-2">
           <div
