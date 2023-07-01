@@ -3,11 +3,11 @@ import { BiRightArrowAlt, BiSearch } from "react-icons/bi";
 import { GiPathDistance } from "react-icons/gi";
 import { IoSettingsSharp } from "react-icons/io5";
 import {
-  TbArrowBounce,
-  TbArrowMoveRight,
-  TbBinaryTree,
-  TbBinaryTree2,
-  TbCircuitChangeover,
+    TbArrowBounce,
+    TbArrowMoveRight,
+    TbBinaryTree,
+    TbBinaryTree2,
+    TbCircuitChangeover
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";

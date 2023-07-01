@@ -1,6 +1,6 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import GitHubButton from "react-github-btn";
-import { BiHelpCircle, BiSearch, BiSupport, BiSync } from "react-icons/bi";
+import { BiSearch, BiSync } from "react-icons/bi";
 import { BsGithub, BsKeyboard, BsPlayFill, BsStarFill } from "react-icons/bs";
 import { CgSupport } from "react-icons/cg";
 import { MdOutlineContactSupport } from "react-icons/md";

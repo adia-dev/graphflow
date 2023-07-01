@@ -1,11 +1,9 @@
 import React from "react";
-import Modal from "../../features/Modal";
-import { AiFillBulb } from "react-icons/ai";
-import { BiChevronRight } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { closeTour } from "./tourSlice";
-import Welcome from "./modals/Welcome";
+import Modal from "../../features/Modal";
 import Demo from "./modals/Demo";
+import Welcome from "./modals/Welcome";
+import { closeTour } from "./tourSlice";
 
 type Props = {};
 

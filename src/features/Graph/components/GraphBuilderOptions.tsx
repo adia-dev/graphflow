@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { useAppDispatch } from "../../../app/hooks";
-import { IGraphBuilder } from "../IGraphBuilder";
+import { openConsole } from "../../Console/consoleSlice";
 import builders from "../builders";
 import { setGraphBuilderIndex } from "../graphSlice";
-import { openConsole } from "../../Console/consoleSlice";
+import { IGraphBuilder } from "../IGraphBuilder";
 
 type Props = {
   close: () => void;

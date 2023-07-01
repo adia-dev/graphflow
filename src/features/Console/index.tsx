@@ -1,25 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import {
-  BsFillInfoCircleFill,
-  BsLayoutSidebarInsetReverse,
-  BsPlayFill,
-  BsThreeDots,
+    BsFillInfoCircleFill,
+    BsLayoutSidebarInsetReverse,
+    BsPlayFill,
+    BsThreeDots
 } from "react-icons/bs";
 import { CiStreamOff, CiStreamOn } from "react-icons/ci";
 import {
-  MdCheckCircleOutline,
-  MdErrorOutline,
-  MdFormatAlignLeft,
+    MdCheckCircleOutline,
+    MdErrorOutline,
+    MdFormatAlignLeft
 } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import builders from "../Graph/builders";
 import { setGraphEdges, setGraphNodes } from "../Graph/graphSlice";
 import { closeConsole, toggleOpenConsole } from "./consoleSlice";
 import {
-  formatMatrix,
-  generateFromEdgeList,
-  generateFromMatrix,
+    formatMatrix,
+    generateFromEdgeList,
+    generateFromMatrix
 } from "./generators";
 
 type Props = {};

@@ -7,6 +7,8 @@ import {
   closeConsole,
   toggleOpenConsole,
 } from "./features/Console/consoleSlice";
+import ContextualHelp from "./features/Context/Help";
+import { setPosition } from "./features/Cursor/cursorSlice";
 import Graph from "./features/Graph";
 import Help from "./features/Help";
 import { closeHelp, openHelp } from "./features/Help/helpSlice";
@@ -55,6 +57,12 @@ function App() {
     };
   }, []);
 
+  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    event.preventDefault();
+
+    dispatch(setPosition({ x: event.pageX, y: event.pageY }));
+  }
+
   return (
     <div
       className="w-screen h-screen overflow-hidden
@@ -63,6 +71,7 @@ function App() {
       galaxy-background
       relative
       "
+      onPointerMove={onPointerMove}
     >
       {quickStartOpened && <QuickStart />}
       {quickActionOpened && (
@@ -71,6 +80,7 @@ function App() {
       <Tour />
       <Help />
       <Graph />
+      <ContextualHelp />
       <div className="absolute bottom-0 w-full">
         <div className="w-full flex flex-col items-end justify-center space-y-2 my-2">
           <div

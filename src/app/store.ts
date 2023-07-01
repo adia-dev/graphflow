@@ -5,6 +5,7 @@ import graphSlice from "../features/Graph/graphSlice";
 import tourSlice from "../features/Tour/tourSlice";
 import helpSlice from "../features/Help/helpSlice";
 import quickStartSlice from "../features/QuickStart/quickStartSlice";
+import cursorSlice from "../features/Cursor/cursorSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     graph: graphSlice,
     tour: tourSlice,
     help: helpSlice,
+    cursor: cursorSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
