@@ -3,11 +3,11 @@ import { BiRightArrowAlt, BiSearch } from "react-icons/bi";
 import { GiPathDistance } from "react-icons/gi";
 import { IoSettingsSharp } from "react-icons/io5";
 import {
-    TbArrowBounce,
-    TbArrowMoveRight,
-    TbBinaryTree,
-    TbBinaryTree2,
-    TbCircuitChangeover
+  TbArrowBounce,
+  TbArrowMoveRight,
+  TbBinaryTree,
+  TbBinaryTree2,
+  TbCircuitChangeover,
 } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -291,9 +291,11 @@ const QuickActions = (props: Props) => {
             <div className="flex items-center relative">
               <div className="flex items-center space-x-2 absolute left-5">
                 <BiSearch className="" />
+              </div>
+              <div className="flex items-center pl-12 w-fit">
                 {filteredCategory !== "all" && (
                   <div
-                    className="py-2 px-3 rounded-full text-white text-xs uppercase mr-2"
+                    className="py-1 px-2 rounded-full text-white text-xs uppercase transition-all duration-200 ease-in-out w-auto"
                     style={{
                       backgroundColor: categories.get(
                         filteredActions[selectedItemIndex].category
@@ -303,21 +305,20 @@ const QuickActions = (props: Props) => {
                     {filteredActions[selectedItemIndex].category}
                   </div>
                 )}
+                <input
+                  type="text"
+                  name="query"
+                  onChange={searchAction}
+                  placeholder="Search or type a command..."
+                  className="w-full p-4 bg-transparent border-none outline-none focus:border-transparent focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out"
+                  style={{
+                    caretColor: categories.get(
+                      filteredActions[selectedItemIndex]?.category || "default"
+                    )?.color,
+                  }}
+                  autoFocus
+                />
               </div>
-              <input
-                type="text"
-                name="query"
-                onChange={searchAction}
-                placeholder="Search or type a command..."
-                className="w-full p-4 bg-transparent pl-12 border-none outline-none focus:border-transparent focus:outline-none focus:ring-0"
-                style={{
-                  caretColor: categories.get(
-                    filteredActions[selectedItemIndex]?.category || "default"
-                  )?.color,
-                  paddingLeft: filteredCategory !== "all" ? "10rem" : "3rem",
-                }}
-                autoFocus
-              />
             </div>
           </form>
           <ul className="px-5 text-xs flex items-center space-x-3 py-2">
