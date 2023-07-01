@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BsQuestion, BsSearch } from "react-icons/bs";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+import ConnectedUsers from "./components/ConnectedUsers";
 import Console from "./features/Console";
 import {
   closeConsole,

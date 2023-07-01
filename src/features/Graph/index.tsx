@@ -1,13 +1,14 @@
 import { useEffect, useRef } from "react";
 import { Network } from "vis-network";
 import { useAppSelector } from "../../app/hooks";
+import ConnectedUsers from "../../components/ConnectedUsers";
 import Cursor from "../Cursor";
 import { selectGraph } from "./graphSlice";
 export * from "./options";
 
 type Props = {};
 
-const Graph = (props: Props) => {
+const Graph = (_props: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const cursor = useAppSelector((state) => state.cursor);
@@ -51,6 +52,9 @@ const Graph = (props: Props) => {
           cursor: `${cursor.visible ? "auto" : "none"}`,
         }}
       ></div>
+      <div className="absolute z-10 left-2 top-2">
+        <ConnectedUsers />
+      </div>
       <Cursor />
     </div>
   );

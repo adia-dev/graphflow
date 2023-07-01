@@ -15,7 +15,7 @@ const Cursor = (props: Props) => {
       }}
     >
       <div
-        className="whitespace-nowrap text-xs absolute top-6 left-4 px-2 py-1 rounded-full"
+        className="whitespace-nowrap text-xs absolute top-3 left-4 px-2 py-1 rounded-full"
         style={{
           backgroundColor: `${cursor.color || "#fff"}`,
         }}
@@ -23,7 +23,7 @@ const Cursor = (props: Props) => {
         {cursor.label}
       </div>
       <BsCursorFill
-        className="-rotate-90 absolute top-full left-0"
+        className="-rotate-90 absolute top-0 left-0"
         style={{
           color: `${cursor.color || "#fff"}`,
         }}
