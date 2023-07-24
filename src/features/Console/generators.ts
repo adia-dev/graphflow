@@ -98,8 +98,11 @@ function generateFromMatrix(input: string): {
     const nodes = matrix
       .map((row, i) =>
         row.map((val, j) => {
+          const numCols = row.length;
+          const id = i * numCols + j;
+
           return {
-            id: i * 10 + j,
+            id: id,
             x: j * 100,
             y: i * 100,
             label: val ? val.toString() : "-",
@@ -111,6 +114,7 @@ function generateFromMatrix(input: string): {
 
     const edges = [];
     const edgeSet = new Set<string>();
+    const numCols = matrix[0].length;
 
     for (let i = 0; i < matrix.length; ++i) {
       for (let j = 0; j < width; ++j) {
@@ -120,8 +124,8 @@ function generateFromMatrix(input: string): {
 
         if (j - 1 >= 0) {
           edges.push({
-            from: i * 10 + j,
-            to: i * 10 + j - 1,
+            from: i * numCols + j,
+            to: i * numCols + j - 1,
             color: matrix[i][j] && matrix[i][j - 1] ? "#6366f1" : "#ffffff25",
           });
           edgeSet.add(key);
@@ -129,8 +133,8 @@ function generateFromMatrix(input: string): {
 
         if (i - 1 >= 0) {
           edges.push({
-            from: i * 10 + j,
-            to: (i - 1) * 10 + j,
+            from: i * numCols + j,
+            to: (i - 1) * numCols + j,
             color: matrix[i][j] && matrix[i - 1][j] ? "#6366f1" : "#ffffff25",
           });
           edgeSet.add(key);
