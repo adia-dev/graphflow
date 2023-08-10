@@ -55,7 +55,7 @@ const Graph = (_props: Props) => {
       <div className="absolute z-10 left-2 top-2">
         <ConnectedUsers />
       </div>
-      <Cursor />
+      { /* <Cursor /> */ }
     </div>
   );
 };

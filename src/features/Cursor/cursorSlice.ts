@@ -12,7 +12,7 @@ interface CursorState {
 // Define the initial state using that type
 const initialState: CursorState = {
   position: { x: 0, y: 0 },
-  visible: false,
+  visible: true,
   label: "Abdoulaye Dia",
   color: "#6366f1",
 };
