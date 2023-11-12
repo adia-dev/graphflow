@@ -298,7 +298,7 @@ const QuickActions = (props: Props) => {
                     className="py-1 px-2 rounded-full text-white text-xs uppercase transition-all duration-200 ease-in-out w-auto"
                     style={{
                       backgroundColor: categories.get(
-                        filteredActions[selectedItemIndex].category
+                        filteredActions.at(selectedItemIndex)?.category ?? "null"
                       )?.color,
                     }}
                   >

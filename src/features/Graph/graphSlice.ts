@@ -7,7 +7,7 @@ import options from "./options";
 interface GraphState {
   nodes: Node[] | DataSet<Node>;
   edges: Edge[] | DataSet<Edge>;
-  builderIndex: number;
+  builderIndex: number | null;
   options: Options;
 }
 
@@ -16,7 +16,7 @@ const initialState: GraphState = {
   nodes: [],
   edges: [],
   options: options,
-  builderIndex: 0,
+  builderIndex: null,
 };
 
 export const graphSlice = createSlice({
